@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemoOncoHub - ระบบสืบค้นและคำนวณขนาดยาเคมีบำบัด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-active { border-bottom: 3px solid #1d4ed8; color: #1d4ed8; font-weight: 600; }
+        .tag-vesicant { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .tag-light { background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+        .tag-filter { background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+        .tag-shake { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+
+    <header class="bg-blue-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+                🔷 ChemoOncoHub <span class="text-xs bg-blue-700 px-2 py-1 rounded font-normal">v1.0</span>
+            </h1>
+            <p class="text-xs text-blue-200">ระบบสนับสนุนการตรวจสอบคำสั่งใช้ยาเคมีบำบัด</p>
+        </div>
+    </header>
+
+    <div class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-8">
+            <button onclick="switchTab('info')" id="tab-info" class="py-4 px-2 text-sm tab-active transition-all">1. ข้อมูลยา Chemo</button>
+            <button onclick="switchTab('seq')" id="tab-seq" class="py-4 px-2 text-sm text-slate-500 hover:text-blue-600 transition-all">2. Sequencing การให้ยา</button>
+            <button onclick="switchTab('cal')" id="tab-cal" class="py-4 px-2 text-sm text-slate-500 hover:text-blue-600 transition-all">3. ChemoCal (คำนวณโดส)</button>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <section id="content-info" class="space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">ค้นหาชื่อยา Generic / Brand</label>
+                    <input type="text" id="search-drug" oninput="filterDrugs()" placeholder="พิมพ์ชื่อยาที่ต้องการ..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">กรองด้วย Special Tags</label>
+                    <div class="flex flex-wrap gap-2 pt-1" id="tag-filters-container">
+                        </div>
+                </div>
+            </div>
+            <div id="drug-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
+        </section>
+
+        <section id="content-seq" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                <label class="block text-xs font-semibold text-slate-500 mb-1">ค้นหาสูตรยา Regimen (เช่น shadow, FOLFOX, AC)</label>
+                <input type="text" id="search-seq" oninput="filterSequences()" placeholder="ค้นหาตามชื่อสูตร หรือชื่อยาในสูตร..." class="w-full md:w-1/3 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div id="seq-list" class="space-y-4">
+                </div>
+        </section>
+
+        <section id="content-cal" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4 h-fit">
+                <h3 class="text-base font-bold text-blue-900 border-b pb-2">👤 ข้อมูลผู้ป่วย & ตัวแปรทางคลินิก</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">เพศ</label>
+                        <select id="cal-gender" onchange="calculateAll()" class="w-full border rounded-lg p-2 text-sm">
+                            <option value="male">ชาย (Male)</option>
+                            <option value="female">หญิง (Female)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">อายุ (ปี)</label>
+                        <input type="number" id="cal-age" oninput="calculateAll()" class="w-full border rounded-lg p-2 text-sm" placeholder="ปี">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">ส่วนสูง (cm)</label>
+                        <input type="number" id="cal-height" oninput="calculateAll()" class="w-full border rounded-lg p-2 text-sm" placeholder="cm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1">น้ำหนักจริง TBW (kg)</label>
+                        <input type="number" id="cal-tbw" oninput="calculateAll()" class="w-full border rounded-lg p-2 text-sm" placeholder="kg">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-600 mb-1">Serum Creatinine (mg/dL)</label>
+                    <input type="number" id="cal-scr" step="0.01" oninput="calculateAll()" class="w-full border rounded-lg p-2 text-sm" placeholder="mg/dL">
+                </div>
+
+                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs space-y-2">
+                    <div class="flex justify-between"><span>Ideal Body Weight (IBW):</span><span id="res-ibw" class="font-bold">- kg</span></div>
+                    <div class="flex justify-between"><span>Adjusted Weight (ABW):</span><span id="res-abw" class="font-bold">- kg</span></div>
+                    <div class="flex justify-between p-1 bg-blue-50 text-blue-900 rounded font-semibold">
+                        <span>น้ำหนักที่เลือกใช้ตามเกณฑ์:</span><span id="res-selected-wt">- kg</span>
+                    </div>
+                    <div class="flex justify-between"><span>BSA (Mosteller):</span><span id="res-bsa" class="font-bold text-blue-700">- m²</span></div>
+                    <div class="flex justify-between"><span>CrCl (Cockcroft-Gault):</span><span id="res-crcl" class="font-bold text-purple-700">- mL/min</span></div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">📏 1. ขนาดยาตามพื้นผิวร่างกาย (BSA-based Dose)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Std Dose (mg/m²)</label>
+                            <input type="number" id="bsa-std" oninput="checkBsaDose()" class="w-full border rounded-lg p-2 text-sm bg-yellow-50" placeholder="กรอกเอง">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Dose ที่แพทย์สั่งจริง (mg)</label>
+                            <input type="number" id="bsa-ordered" oninput="checkBsaDose()" class="w-full border rounded-lg p-2 text-sm font-bold" placeholder="mg">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">คำนวณกลับได้เป็น</label>
+                            <div id="bsa-calculated-ratio" class="p-2 border bg-slate-50 rounded-lg text-sm font-semibold">- mg/m²</div>
+                        </div>
+                    </div>
+                    <div id="bsa-alert" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">⚖️ 2. ขนาดยาตามน้ำหนักตัว (Weight-based Dose)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Std Dose (mg/kg)</label>
+                            <input type="number" id="wt-std" oninput="checkWtDose()" class="w-full border rounded-lg p-2 text-sm bg-yellow-50" placeholder="กรอกเอง">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Dose ที่แพทย์สั่งจริง (mg)</label>
+                            <input type="number" id="wt-ordered" oninput="checkWtDose()" class="w-full border rounded-lg p-2 text-sm font-bold" placeholder="mg">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">คำนวณกลับได้เป็น</label>
+                            <div id="wt-calculated-ratio" class="p-2 border bg-slate-50 rounded-lg text-sm font-semibold">- mg/kg</div>
+                        </div>
+                    </div>
+                    <div id="wt-alert" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-700 flex items-center gap-2">🧪 3. Carboplatin (Calvert Formula)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Target AUC</label>
+                            <input type="number" id="auc-std" oninput="checkAucDose()" class="w-full border rounded-lg p-2 text-sm bg-yellow-50" placeholder="กรอกเองเช่น 5, 6">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">Dose ที่แพทย์สั่งจริง (mg)</label>
+                            <input type="number" id="auc-ordered" oninput="checkAucDose()" class="w-full border rounded-lg p-2 text-sm font-bold" placeholder="mg">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-500 mb-1">คำนวณกลับได้เป็น</label>
+                            <div id="auc-calculated-ratio" class="p-2 border bg-slate-50 rounded-lg text-sm font-semibold">- AUC</div>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-500 italic">**คำนวณโดยใช้ GFR (CrCl) ที่ Cap สูงสุด 125 mL/min ตามเกณฑ์มาตรฐานดั้งเดิม**</div>
+                    <div id="auc-alert" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="chemo_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
