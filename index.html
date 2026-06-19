@@ -2020,7 +2020,7 @@ function refreshCalvertCalc(){
     const gfrCapped = Math.min(currentCrCl, 125);
     denom = gfrCapped + 25;
   }
-  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "GFR (cap 125) + 25 ที่ใช้คำนวณ", "formula-render-calvert", "Calvert");
+  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "CrCl (Cap 125) + 25 ที่ใช้คำนวณ", "formula-render-calvert", "Calvert");
 }
 function refreshAllCalculators(){ refreshBSACalc(); refreshWeightCalc(); refreshCalvertCalc(); }
 
