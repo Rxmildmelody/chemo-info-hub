@@ -155,7 +155,7 @@
 
   .results-count{font-size:13px; color:var(--muted); margin:0 2px 14px;}
 
-  /* ===== Grid Cards ===== */
+ /* ===== Grid Cards ===== */
   .drug-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
@@ -165,13 +165,30 @@
     background:var(--surface); border:1px solid var(--line);
     border-radius:var(--radius); padding:16px;
     cursor:pointer; text-align:left;
-    transition:box-shadow .15s ease, border-color .15s ease, transform .1s ease;
     display:flex; flex-direction:column; gap:10px;
+    /* ปรับ transition ให้สมูทและครอบคลุมเอฟเฟกต์ใหม่ */
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .drug-card:hover{box-shadow:var(--shadow); border-color:#C9D7F2; transform:translateY(-2px);}
+  
+  /* --- ส่วนที่ปรับเพิ่มเอฟเฟกต์ Hover ให้เห็นชัดมากยิ่งขึ้น --- */
+  .drug-card:hover{
+    /* เพิ่มเงาให้ฟุ้งและมีมิติมากขึ้น ผสมสีฟ้า */
+    box-shadow: 0 16px 36px rgba(36, 84, 214, 0.15), 0 4px 12px rgba(22, 35, 63, 0.08); 
+    border-color: var(--blue);
+    /* เพิ่มขอบสีฟ้าซ้อนอีกชั้นให้คมชัดสุดๆ */
+    outline: 1px solid var(--blue);
+    /* เปลี่ยนสีพื้นหลังเล็กน้อยให้ดูสว่างโดดเด่น */
+    background: #F7FAFF; 
+    /* ยกการ์ดให้ลอยขึ้นและขยายขนาดหน้าต่างขึ้น 1.5% */
+    transform: translateY(-6px) scale(1.015);
+    z-index: 10;
+  }
+  .drug-card:hover h3 { color: var(--blue-dark); }
+  .drug-card:hover .alt-name, .drug-card:hover .drug-card-note { color: var(--ink); }
+
   .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
-  .drug-card-name h3{font-size:16px; font-weight:600;}
-  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .drug-card-name h3{font-size:16px; font-weight:600; transition: color 0.15s ease;}
+  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px; transition: color 0.15s ease;}
   .drug-class{
     font-size:11px; font-weight:600; color:var(--blue);
     background:var(--blue-soft); padding:3px 9px; border-radius:999px;
@@ -187,13 +204,8 @@
   .tag-pill.hazard{background:var(--hazard-soft); color:var(--hazard);}
   .tag-pill.handling{background:var(--blue-soft); color:var(--blue-dark);}
   .tag-pill.custom{background:#F1F5F9; color:#475569; border:1px solid #E2E8F0;}
-  .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6;}
-  .empty-state{
-    text-align:center; padding:60px 20px; color:var(--muted);
-    border:1px dashed var(--line); border-radius:var(--radius); background: var(--surface);
-  }
-  .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
-
+  .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6; transition: color 0.15s ease;}
+  
   /* ===== Detail Panel (Pop-up Window) ===== */
   .backdrop{
     position:fixed; inset:0; background:rgba(16,24,45,0.45);
@@ -356,9 +368,19 @@
   }
   .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
 
-  /* แผงแดชบอร์ดแสดงค่าสถิติ */
+ /* แผงแดชบอร์ดแสดงค่าสถิติ */
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
-  .stat-box{background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .stat-box{
+    background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;
+    transition: all 0.2s ease; /* เพิ่ม Transition */
+  }
+  /* เพิ่ม Hover effect ให้กล่องสถิติ */
+  .stat-box:hover{
+    border-color: var(--blue);
+    background: #FFFFFF;
+    box-shadow: 0 8px 24px rgba(36, 84, 214, 0.12);
+    transform: translateY(-3px);
+  }
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
   .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
