@@ -26,7 +26,7 @@
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   
-  /* Updated Background to Soft Blue-Gray-White Gradient */
+  /* ปรับสีพื้นหลังเป็น Gradient ฟ้า-เทา-ขาว สไตล์โมเดิร์นตามสั่ง */
   body{
     background: linear-gradient(135deg, #d6e0ea 0%, #eef2f5 50%, #ffffff 100%);
     background-attachment: fixed;
@@ -46,8 +46,10 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
 
-  .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span {
+  /* ตั้งค่าให้ปัดตกบรรทัดได้สำหรับข้อมูลที่ยาว */
+  .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span, .sc-value {
     white-space: pre-wrap;
+    word-break: break-word;
   }
 
   /* ===== Topbar ===== */
@@ -189,18 +191,18 @@
   }
   .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
 
-  /* ===== Detail Panel (Updated to Centered Pop-up Modal) ===== */
+  /* ===== Detail Panel (เปลี่ยนเป็น Pop-up Window กลางหน้าจอตามสั่ง) ===== */
   .backdrop{
     position:fixed; inset:0; background:rgba(16,24,45,0.45);
-    opacity:0; visibility:hidden; transition:opacity .25s ease;
+    opacity:0; visibility:hidden; transition:opacity .22s ease;
     z-index:40; backdrop-filter: blur(2px);
   }
   .backdrop.show{opacity:1; visibility:visible;}
   
   .detail-panel{
     position:fixed; top:50%; left:50%; 
-    transform:translate(-50%, -45%) scale(0.95);
-    height:auto; max-height:90vh; width:650px; max-width:95vw;
+    transform:translate(-50%, -45%) scale(0.96);
+    height:auto; max-height:85vh; width:640px; max-width:94vw;
     background:var(--surface);
     box-shadow:var(--shadow);
     border-radius: 16px;
@@ -247,14 +249,14 @@
   .detail-tag-row strong{display:block; font-size:13px; margin-bottom:2px;}
   .detail-tag-row span{font-size:12.5px; color:var(--muted);}
 
-  /* ===== Info Modal ===== */
+  /* ===== Info Pop-up Window ===== */
   .info-modal {
     position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -45%) scale(0.95);
-    width: 420px; max-width: 90vw; background: var(--surface);
-    border-radius: 16px; padding: 30px; text-align: center;
+    transform: translate(-50%, -45%) scale(0.96);
+    width: 440px; max-width: 92vw; background: var(--surface);
+    border-radius: 16px; padding: 26px; text-align: center;
     box-shadow: var(--shadow); z-index: 50;
-    opacity: 0; visibility: hidden; transition: all .25s ease;
+    opacity: 0; visibility: hidden; transition: all .22s ease;
   }
   .info-modal.show {
     transform: translate(-50%, -50%) scale(1);
@@ -323,35 +325,82 @@
     color:var(--muted); font-size:12px; text-align:center;
   }
 
-  /* ===== Dynamic Calculator Redesign ===== */
+  /* ===== ChemoCal & Calculator Layout ===== */
   .calc-card{
-    background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow);
-    border-radius:var(--radius); padding:24px 28px; margin-bottom:16px;
-    max-width: 600px; margin-inline: auto;
+    background:var(--surface); border:1px solid var(--line); box-shadow: var(--shadow);
+    border-radius:var(--radius); padding:20px 22px; margin-bottom:16px;
   }
-  .formula-shortcuts { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
-  .formula-shortcuts .btn-secondary {
-    padding: 8px 14px; font-size: 13.5px; border-radius: 8px; font-weight: 600;
-  }
-  
-  .calc-display-large {
-    width: 100%; height: 60px; font-size: 24px; text-align: right;
-    margin-bottom: 20px; padding: 10px 20px; font-family: 'IBM Plex Mono', monospace;
-    border: 2px solid var(--line); border-radius: 12px; background: #F8FAFC;
-    color: var(--blue-dark); outline: none; transition: border-color 0.2s;
-  }
-  .calc-display-large:focus { border-color: var(--blue); }
-  
-  .calc-grid-large { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .calc-grid-large .calc-btn {
-    padding: 16px 0; font-size: 20px; font-weight: 600; border-radius: 10px;
-    border: 1px solid var(--line); background: var(--surface); cursor: pointer;
-    transition: all 0.1s;
-  }
-  .calc-grid-large .calc-btn:hover { background: #F1F5F9; transform: translateY(1px); }
-  .calc-grid-large .calc-btn.op { background: var(--blue-soft); color: var(--blue-dark); border-color: var(--blue-soft); }
-  .calc-grid-large .calc-btn.eq { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .calc-card h3{font-size:15.5px; margin-bottom:3px; display: flex; justify-content: space-between; align-items: center;}
+  .calc-card .calc-sub{font-size:12.5px; color:var(--muted); margin-bottom:16px;}
 
+  .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px;}
+  .field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%; border:1px solid var(--line); background:#F5F8FC;
+    border-radius:8px; padding:9px 11px; font-size:14px; color:var(--ink);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--blue); outline:none;}
+
+  .weight-chip-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-top:14px;}
+  .weight-chip{
+    border:1.5px solid var(--line); background:#F5F8FC; border-radius:10px;
+    padding:11px 12px; text-align:left;
+  }
+  .weight-chip[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-soft);}
+  .weight-chip .wc-label{font-size:11.5px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:5px;}
+  .weight-chip[aria-pressed="true"] .wc-label{color:var(--blue-dark);}
+  .weight-chip .wc-value{font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; margin-top:3px;}
+  .weight-chip .wc-tag{
+    font-size:10px; font-weight:700; color:var(--blue); background:var(--blue-soft);
+    padding:1px 6px; border-radius:999px; text-transform:uppercase;
+  }
+  .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
+  .stat-box{background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
+  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px;}
+  
+  .result-block{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
+  .result-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:6px 0; font-size:13.5px;}
+  .result-row .r-label{color:var(--muted); flex-shrink:0;}
+  .result-row .r-value{font-family:'IBM Plex Mono',monospace; font-weight:600; text-align:right;}
+  .result-row .r-value.good{color:#1B7A4A;}
+  .result-row .r-value.bad{color:var(--hazard);}
+  .alert-box{ margin-top:12px; display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:9px; font-size:13px; }
+  .alert-box.bad{background:var(--hazard-soft); color:var(--hazard); border:1px solid rgba(197,58,43,0.25);}
+  .alert-box.good{background:#EAF6EF; color:#1B7A4A; border:1px solid rgba(27,122,74,0.2);}
+  .alert-box svg{width:16px; height:16px; flex-shrink:0; margin-top:1px;}
+  .alert-box strong{display:block; margin-bottom:2px;}
+  .placeholder-text{font-size:13px; color:var(--muted); font-style:italic;}
+
+  /* Formula Templates */
+  .formula-blank-template {
+    background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 12px; border-radius: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; margin-top: 10px; color: var(--blue-dark);
+  }
+  .btn-formula {
+    background: none; border: 1px solid var(--line); color: var(--muted); padding: 4px 8px;
+    border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-formula:hover { background: #F5F8FC; color: var(--ink); }
+
+  /* ===== Pop-up Calculator Modal with Shortcut Formulas ===== */
+  .calc-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.45); z-index:90; display:none; justify-content:center; align-items:center; backdrop-filter: blur(2px); }
+  .calc-overlay.show { display:flex; }
+  .calc-container { background:var(--surface); padding:22px; border-radius:16px; width:360px; box-shadow:var(--shadow); }
+  .calc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .calc-header h3 { font-size:16px; margin:0; color:var(--blue-dark); }
+  .formula-shortcuts-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+  .btn-shortcut { background: var(--blue-soft); color: var(--blue-dark); border: 1px solid rgba(36,84,214,0.15); border-radius: 6px; padding: 5px 8px; font-size: 11px; font-weight: 600; }
+  .btn-shortcut:hover { background: var(--blue); color: #fff; }
+  .calc-display { width:100%; height:55px; font-size:20px; text-align:right; margin-bottom:15px; padding:10px; font-family:'IBM Plex Mono', monospace; border:1px solid var(--line); border-radius:8px; background:#F8FAFC; outline:none; color: var(--ink); }
+  .calc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
+  .calc-btn { padding:14px 0; font-size:18px; font-weight:600; border-radius:8px; border:1px solid var(--line); background:#F5F8FC; cursor:pointer; transition: all 0.1s; }
+  .calc-btn:hover { background:var(--line); }
+  .calc-btn.op { background:var(--blue-soft); color:var(--blue-dark); border-color:var(--blue-soft); }
+  .calc-btn.eq { background:var(--blue); color:#fff; border-color:var(--blue); grid-column:span 2; }
 
   /* ===== Stability card layout ===== */
   .stability-fluids{
@@ -415,7 +464,7 @@
 
   .form-drawer{
     position:fixed; top:0; right:0; height:100%;
-    width:520px; max-width:100vw;
+    width:520px; max-width:96vw;
     background:var(--surface); z-index:42;
     box-shadow:-8px 0 30px rgba(16,24,45,0.18);
     transform:translateX(100%); transition:transform .22s cubic-bezier(.4,0,.2,1);
@@ -428,10 +477,10 @@
   }
   .form-drawer-head h2{font-size:17px; flex:1;}
   .form-drawer-close{
-    border:none; background:#F5F8FC; width:32px; height:32px;
+    border:none; background:#F5F8FC; width:30px; height:30px;
     border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted);
   }
-  .form-drawer-close:hover{color:var(--hazard); background:var(--hazard-soft);}
+  .form-drawer-close:hover{color:var(--ink); background:var(--line);}
   .form-drawer-body{flex:1; overflow-y:auto; padding:20px 22px 10px;}
   .form-drawer-foot{
     padding:14px 22px 20px; border-top:1px solid var(--line);
@@ -445,16 +494,14 @@
     display: flex; justify-content: space-between; align-items: center;
   }
   .form-section-label:first-child{margin-top:0;}
+  
+  /* ปรับแต่งความกว้าง/ความสูงเพื่อให้ Textarea ความคงตัวเหมาะสม */
   .field textarea{
     width:100%; border:1px solid var(--line); background:#F5F8FC;
     border-radius:8px; padding:9px 11px; font-size:13.5px; color:var(--ink);
-    font-family:'Inter',sans-serif; resize:vertical; min-height:70px;
+    font-family:'Inter',sans-serif; resize:vertical; min-height:60px;
   }
-  .field input{
-    width:100%; border:1px solid var(--line); background:#F5F8FC;
-    border-radius:8px; padding:9px 11px; font-size:14px; color:var(--ink);
-  }
-  .field input:focus, .field textarea:focus{border-color:var(--blue); outline:none;}
+  
   .tags-check-grid{
     display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; margin-top:4px;
   }
@@ -473,7 +520,7 @@
   }
   .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
   
-  /* Tag Action Buttons (Edit/Delete Custom Tags) */
+  /* Tag Action Buttons */
   .tag-actions { margin-left: auto; display: flex; gap: 4px; }
   .tag-action-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 2px; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
   .tag-checkbox:hover .tag-action-btn { opacity: 1; }
@@ -560,7 +607,7 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== Buttons / Toast ===== */
+  /* ===== Utility elements ===== */
   .btn-primary{
     background:var(--blue); color:#fff; border:none;
     font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
@@ -597,12 +644,12 @@
       <h1>ChemoGuide</h1>
       <p>Drug Information • Regimen Sequencing • Calculator</p>
     </div>
-    <div style="margin-left:auto; display:flex; align-items:center; gap:16px;">
-      <span class="hide-mobile" style="font-size:13.5px; font-weight:600; color:var(--blue-dark); text-align:right;">
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span class="hide-mobile" style="font-size:13px; font-weight:600; color:var(--blue-dark); text-align:right;">
         Ratchaburi Hospital<br>Chemotherapy Drug Database
       </span>
-      <button onclick="document.getElementById('info-modal').classList.add('show'); document.getElementById('backdrop').classList.add('show');" style="background:none; border:none; color:var(--blue); cursor:pointer; padding:6px; background:var(--blue-soft); border-radius:50%;" title="Creator Information">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <button onclick="document.getElementById('info-modal').classList.add('show'); document.getElementById('backdrop').classList.add('show');" style="background:none; border:none; color:var(--blue); cursor:pointer; padding:6px; background:var(--blue-soft); border-radius:50%; display:flex;" title="ข้อมูลผู้จัดทำ">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       </button>
     </div>
   </div>
@@ -653,49 +700,146 @@
   </section>
 
   <section class="tab-panel" id="tab-chemocal">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+      <button class="btn-primary" onclick="document.getElementById('calc-overlay').classList.add('show')" style="display: flex; align-items: center; gap: 6px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
+        เครื่องคิดเลขพร้อมสูตรทางลัด
+      </button>
+    </div>
+
     <div class="calc-card">
-      <h3 style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
-        Formula Scratchpad
-      </h3>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:18px;">
-        เครื่องคิดเลขอิสระ เลือกสูตรที่ต้องการ ระบบจะสร้างเทมเพลตและเว้นช่องว่าง (_) ให้กรอกตัวเลขเพื่อคำนวณ หรือพิมพ์สมการทางคณิตศาสตร์ได้โดยตรง
-      </p>
-      
-      <div class="formula-shortcuts">
-        <button class="btn-secondary" onclick="insertFormula('√(( _ * _ ) / 3600)')">BSA (Mosteller)</button>
-        <button class="btn-secondary" onclick="insertFormula('((140 - _ ) * _ ) / (72 * _ )')">CrCl (Male)</button>
-        <button class="btn-secondary" onclick="insertFormula('(((140 - _ ) * _ ) / (72 * _ )) * 0.85')">CrCl (Female)</button>
-        <button class="btn-secondary" onclick="insertFormula('_ * ( _ + 25)')">Calvert (AUC)</button>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
+        <h3>ข้อมูลผู้ป่วย</h3>
+        <button class="clear-filters" id="pt-reset" type="button" style="padding:6px 12px; font-size:12px;">ล้างข้อมูลผู้ป่วย</button>
+      </div>
+      <p class="calc-sub">กรอกข้อมูลเพื่อคำนวณน้ำหนักที่แนะนำ, BSA และ CrCl — ใช้ค่าเดียวกันกับเครื่องคำนวณขนาดยาทั้งหมดด้านล่าง</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="pt-sex">เพศ</label>
+          <select id="pt-sex">
+            <option value="male">ชาย</option>
+            <option value="female">หญิง</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pt-age">อายุ (ปี)</label>
+          <input id="pt-age" type="number" min="0" step="1" placeholder="เช่น 58">
+        </div>
+        <div class="field">
+          <label for="pt-height">ส่วนสูง (ซม.)</label>
+          <input id="pt-height" type="number" min="0" step="0.1" placeholder="เช่น 160">
+        </div>
+        <div class="field">
+          <label for="pt-weight">น้ำหนักตัวจริง (กก.)</label>
+          <input id="pt-weight" type="number" min="0" step="0.1" placeholder="เช่น 65">
+        </div>
+        <div class="field">
+          <label for="pt-scr">Serum Creatinine (มก./ดล.)</label>
+          <input id="pt-scr" type="number" min="0" step="0.01" placeholder="เช่น 0.8">
+        </div>
+        <div class="field">
+          <label for="pt-bsa-manual">BSA (m²) <span style="font-weight:400;color:var(--blue);">(แก้ไขได้)</span></label>
+          <input id="pt-bsa-manual" type="number" min="0" step="0.01" placeholder="คำนวณอัตโนมัติ/กรอกเอง">
+        </div>
       </div>
 
-      <input type="text" id="main-calc-display" class="calc-display-large" placeholder="แทนที่ _ ด้วยตัวเลข หรือพิมพ์สมการ..." autocomplete="off" oninput="mainCalcVal = this.value">
+      <div class="weight-chip-row" id="weight-chip-row"></div>
+      <p class="calc-note" id="weight-rec-note"></p>
+
+      <div class="stat-grid" style="margin-top:16px">
+        <div class="stat-box">
+          <div class="stat-label">CrCl (Cockcroft-Gault)</div>
+          <div class="stat-value" id="stat-crcl">—</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
+        <div class="formula-blank-template" style="display:none;">
+          <strong style="color:var(--ink);">CrCl</strong> = ( ( 140 - [ <span style="color:var(--muted);">อายุ</span> ] ) × [ <span style="color:var(--muted);">น้ำหนัก</span> ] ) ÷ ( 72 × [ <span style="color:var(--muted);">SCr</span> ] ) <br>
+          <span style="font-size: 11px; color:var(--muted);">* หากเป็นเพศหญิง ให้คูณ 0.85 เพิ่มตอนท้าย</span><br><br>
+          <strong style="color:var(--ink);">BSA (Mosteller)</strong> = √ ( ( [ <span style="color:var(--muted);">ส่วนสูง cm</span> ] × [ <span style="color:var(--muted);">น้ำหนัก kg</span> ] ) ÷ 3600 )
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <h3>ขนาดยาตาม BSA (mg/m²)</h3>
+      <p class="calc-sub">เทียบขนาดยาที่ให้จริงกับขนาดยามาตรฐานที่ระบุ ยอมรับได้ในช่วง ±10%</p>
       
-      <div class="calc-grid-large">
-        <button class="calc-btn op" onclick="pressMainCalc('C')">C</button>
-        <button class="calc-btn op" onclick="pressMainCalc('(')">(</button>
-        <button class="calc-btn op" onclick="pressMainCalc(')')">)</button>
-        <button class="calc-btn op" onclick="pressMainCalc('/')">÷</button>
-        
-        <button class="calc-btn" onclick="pressMainCalc('7')">7</button>
-        <button class="calc-btn" onclick="pressMainCalc('8')">8</button>
-        <button class="calc-btn" onclick="pressMainCalc('9')">9</button>
-        <button class="calc-btn op" onclick="pressMainCalc('*')">×</button>
-        
-        <button class="calc-btn" onclick="pressMainCalc('4')">4</button>
-        <button class="calc-btn" onclick="pressMainCalc('5')">5</button>
-        <button class="calc-btn" onclick="pressMainCalc('6')">6</button>
-        <button class="calc-btn op" onclick="pressMainCalc('-')">−</button>
-        
-        <button class="calc-btn" onclick="pressMainCalc('1')">1</button>
-        <button class="calc-btn" onclick="pressMainCalc('2')">2</button>
-        <button class="calc-btn" onclick="pressMainCalc('3')">3</button>
-        <button class="calc-btn op" onclick="pressMainCalc('+')">+</button>
-        
-        <button class="calc-btn" onclick="pressMainCalc('0')">0</button>
-        <button class="calc-btn" onclick="pressMainCalc('.')">.</button>
-        <button class="calc-btn op" onclick="pressMainCalc('√(')">√</button>
-        <button class="calc-btn eq" onclick="pressMainCalc('=')">=</button>
+      <div class="field-grid">
+        <div class="field">
+          <label for="bsa-target">ขนาดยามาตรฐาน (mg/m²)</label>
+          <input id="bsa-target" type="number" min="0" step="0.1" placeholder="เช่น 75">
+        </div>
+        <div class="field">
+          <label for="bsa-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="bsa-dose" type="number" min="0" step="0.1" placeholder="เช่น 130">
+        </div>
+      </div>
+      
+      <div style="margin-top: 14px;">
+        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
+        <div class="formula-blank-template" style="display:none;">
+          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">BSA</span> ]
+        </div>
+      </div>
+
+      <div class="result-block" id="bsa-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <h3>ขนาดยาตามน้ำหนักตัว (mg/kg)</h3>
+      <p class="calc-sub">ใช้น้ำหนักที่เลือกไว้ในข้อมูลผู้ป่วยด้านบน เทียบกับขนาดยามาตรฐาน ±10%</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="wt-target">ขนาดยามาตรฐาน (mg/kg)</label>
+          <input id="wt-target" type="number" min="0" step="0.01" placeholder="เช่น 1.5">
+        </div>
+        <div class="field">
+          <label for="wt-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="wt-dose" type="number" min="0" step="0.1" placeholder="เช่น 95">
+        </div>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
+        <div class="formula-blank-template" style="display:none;">
+          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">น้ำหนักที่เลือกใช้</span> ]
+        </div>
+      </div>
+
+      <div class="result-block" id="wt-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <h3>Calvert Formula — Carboplatin (AUC)</h3>
+      <p class="calc-sub">ใช้ GFR จาก CrCl ที่คำนวณได้ (cap ที่ 125 mL/min ตามคำแนะนำดั้งเดิม) เทียบ AUC ±10%</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="cb-target">Target AUC (mg·min/mL)</label>
+          <input id="cb-target" type="number" min="0" step="0.1" placeholder="เช่น 5">
+        </div>
+        <div class="field">
+          <label for="cb-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="cb-dose" type="number" min="0" step="0.1" placeholder="เช่น 550">
+        </div>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
+        <div class="formula-blank-template" style="display:none;">
+          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">Target AUC</span> ] × ( [ <span style="color:var(--muted);">CrCl (สูงสุดไม่เกิน 125)</span> ] + 25 )
+        </div>
+      </div>
+
+      <div class="result-block" id="cb-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
       </div>
     </div>
   </section>
@@ -709,23 +853,23 @@
 <div class="backdrop" id="backdrop"></div>
 
 <div class="info-modal" id="info-modal">
-  <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 18px;">Creator Information</h3>
-  <p style="font-size: 14.5px; line-height: 1.8; margin-bottom: 20px; color: var(--ink);">
+  <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำโครงการ</h3>
+  <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
     จัดทำโดย นสภ.ปิยฉัตร เทศสวัสดิ์<br>
     คณะเภสัชศาสตร์ มหาวิทยาลัยนเรศวร<br>
     Version v1.0<br>
-    <span style="color:var(--muted); font-size:13px;">Last Updated June 2026</span>
+    <span style="color:var(--muted); font-size:12px;">Last Updated June 2026</span>
   </p>
-  <div style="background: var(--hazard-soft); color: var(--hazard); padding: 16px; border-radius: 12px; font-size: 13px; text-align: left; line-height: 1.6; border: 1px solid rgba(197,58,43,0.15);">
-    <strong style="display:block; margin-bottom:4px;">Disclaimer:</strong> ข้อมูลนี้จัดทำขึ้นเพื่อเป็นแหล่งอ้างอิงสำหรับบุคลากรทางการแพทย์ ควรตรวจสอบข้อมูลจากเอกสารอ้างอิงและแนวทางปฏิบัติล่าสุดก่อนใช้งานจริง
+  <div style="background: var(--hazard-soft); color: var(--hazard); padding: 14px; border-radius: 12px; font-size: 12.5px; text-align: left; line-height: 1.5; border: 1px solid rgba(197,58,43,0.15);">
+    <strong>Disclaimer:</strong> ข้อมูลนี้จัดทำขึ้นเพื่อเป็นแหล่งอ้างอิงสำหรับบุคลากรทางการแพทย์ ควรตรวจสอบข้อมูลจากเอกสารอ้างอิงและแนวทางปฏิบัติล่าสุดก่อนใช้งานจริง
   </div>
-  <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 24px; width: 100%;">ปิดหน้าต่าง</button>
+  <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
     <h2 id="detail-name"></h2>
     <p class="alt-name" id="detail-alt"></p>
@@ -738,7 +882,7 @@
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
     <h2 id="drug-drawer-title">เพิ่มข้อมูลยาใหม่</h2>
     <button class="form-drawer-close" id="close-drug-drawer" aria-label="ปิด">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <div class="form-drawer-body" id="drug-form-body">
@@ -767,7 +911,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องรับข้อมูลปัดตกบรรทัดได้อัตโนมัติ)</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
@@ -775,23 +919,23 @@
       </div>
       <div class="field">
         <label for="nf-recon-rt">ความคงตัว Recon — อุณหภูมิห้อง</label>
-        <input id="nf-recon-rt" type="text" placeholder="เช่น 24 ชม.">
+        <textarea id="nf-recon-rt" placeholder="ระบุความคงตัวยาวๆ ได้ ช่องจะตัดคำขึ้นบรรทัดใหม่ให้"></textarea>
       </div>
       <div class="field">
         <label for="nf-recon-fr">ความคงตัว Recon — ตู้เย็น</label>
-        <input id="nf-recon-fr" type="text" placeholder="เช่น 7 วัน">
+        <textarea id="nf-recon-fr" placeholder="เช่น 7 วันในตู้เย็น 2-8 องศา..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-rt">ความคงตัว Dilute — อุณหภูมิห้อง</label>
-        <input id="nf-dil-rt" type="text" placeholder="เช่น 24 ชม.">
+        <textarea id="nf-dil-rt" placeholder="ใส่ข้อมูลรายละเอียดสารน้ำเจือจาง..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-fr">ความคงตัว Dilute — ตู้เย็น</label>
-        <input id="nf-dil-fr" type="text" placeholder="เช่น 14 วัน">
+        <textarea id="nf-dil-fr" placeholder="ใส่ข้อกำหนดความคงตัวยาวๆ..."></textarea>
       </div>
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-maxconc">Max Concentration</label>
-        <input id="nf-maxconc" type="text" placeholder="เช่น 10 mg/mL">
+        <textarea id="nf-maxconc" placeholder="เช่น ไม่เกิน 10 mg/mL หรืออธิบายสูตรคำนวณประกอบได้"></textarea>
       </div>
     </div>
 
@@ -825,7 +969,7 @@
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
     <h2 id="regimen-drawer-title">เพิ่มสูตรยาใหม่</h2>
     <button class="form-drawer-close" id="close-regimen-drawer" aria-label="ปิด">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <div class="form-drawer-body" id="regimen-form-body">
@@ -869,6 +1013,51 @@
     <button class="btn-primary" id="save-regimen-btn" type="button">บันทึกสูตรยา</button>
   </div>
 </aside>
+
+<div class="calc-overlay" id="calc-overlay">
+  <div class="calc-container">
+    <div class="calc-header">
+      <h3>เครื่องคิดเลขสูตรทดสอบ</h3>
+      <button onclick="document.getElementById('calc-overlay').classList.remove('show')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted); font-weight:bold;">&times;</button>
+    </div>
+    
+    <div class="formula-shortcuts-row">
+      <button class="btn-shortcut" onclick="insertFormula('√(( _ * _ ) / 3600)')">BSA (Mosteller)</button>
+      <button class="btn-shortcut" onclick="insertFormula('((140 - _ ) * _ ) / (72 * _ )')">CrCl (Male)</button>
+      <button class="btn-shortcut" onclick="insertFormula('(((140 - _ ) * _ ) / (72 * _ )) * 0.85')">CrCl (Female)</button>
+      <button class="btn-shortcut" onclick="insertFormula('_ * ( _ + 25)')">Calvert (AUC)</button>
+    </div>
+
+    <input type="text" class="calc-display" id="calc-display" value="" placeholder="เลือกสูตรทางลัด หรือพิมพ์สมการ..." autocomplete="off" oninput="calcVal = this.value">
+    
+    <div class="calc-grid">
+      <button class="calc-btn op" onclick="pressCalc('C')">C</button>
+      <button class="calc-btn op" onclick="pressCalc('(')">(</button>
+      <button class="calc-btn op" onclick="pressCalc(')')">)</button>
+      <button class="calc-btn op" onclick="pressCalc('/')">÷</button>
+      
+      <button class="calc-btn" onclick="pressCalc('7')">7</button>
+      <button class="calc-btn" onclick="pressCalc('8')">8</button>
+      <button class="calc-btn" onclick="pressCalc('9')">9</button>
+      <button class="calc-btn op" onclick="pressCalc('*')">×</button>
+      
+      <button class="calc-btn" onclick="pressCalc('4')">4</button>
+      <button class="calc-btn" onclick="pressCalc('5')">5</button>
+      <button class="calc-btn" onclick="pressCalc('6')">6</button>
+      <button class="calc-btn op" onclick="pressCalc('-')">−</button>
+      
+      <button class="calc-btn" onclick="pressCalc('1')">1</button>
+      <button class="calc-btn" onclick="pressCalc('2')">2</button>
+      <button class="calc-btn" onclick="pressCalc('3')">3</button>
+      <button class="calc-btn op" onclick="pressCalc('+')">+</button>
+      
+      <button class="calc-btn" onclick="pressCalc('0')">0</button>
+      <button class="calc-btn" onclick="pressCalc('.')">.</button>
+      <button class="calc-btn op" onclick="pressCalc('√(')">√</button>
+      <button class="calc-btn eq" onclick="pressCalc('=')">=</button>
+    </div>
+  </div>
+</div>
 
 <div class="success-toast" id="success-toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
@@ -920,13 +1109,11 @@ document.body.insertAdjacentHTML('beforeend', `
   </div>
 `);
 
-// Fetch data from Google Sheets API
 async function initDatabase() {
   try {
     const res = await fetch(SCRIPT_URL);
     const data = await res.json();
     
-    // Parse Tags
     CUSTOM_TAGS = {};
     if(data.tags && data.tags.length > 0){
       data.tags.forEach(t => { 
@@ -935,7 +1122,6 @@ async function initDatabase() {
     }
     TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
 
-    // Parse Drugs
     DRUGS = (data.drugs || []).map(d => ({
       id: d.id, name: d.name, altName: d.altName, drugClass: d.drugClass,
       tags: d.tags ? d.tags.split(",") : [],
@@ -945,7 +1131,6 @@ async function initDatabase() {
       lastModified: Number(d.lastModified) || Date.now()
     }));
 
-    // Parse Regimens
     REGIMENS = (data.regimens || []).map(r => ({
       id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
       refs: r.refs ? r.refs.split("|") : [],
@@ -955,11 +1140,11 @@ async function initDatabase() {
 
     document.getElementById("db-loading").style.display = "none";
     
-    // Build UI based on new data
     buildTagCheckboxes();
     buildFilterUI();
     renderDrugs();
     renderRegimens();
+    updatePatientCalc();
     
   } catch (err) {
     document.getElementById("db-loading-text").innerHTML = "<span style='color:red;'>⚠️ ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาตรวจสอบสิทธิ์การเข้าถึง Google Apps Script หรือรีเฟรชหน้าเว็บ</span>";
@@ -967,7 +1152,6 @@ async function initDatabase() {
   }
 }
 
-// POST data back to Google Sheets API
 async function saveData() {
   showToast("กำลังซิงค์ข้อมูลกับฐานข้อมูล...");
   
@@ -991,10 +1175,7 @@ async function saveData() {
   const payload = { drugs: flatDrugs, regimens: flatRegimens, tags: flatTags };
 
   try {
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
     if(result.status === "success"){
       showToast("บันทึกข้อมูลและอัปเดตลงฐานข้อมูลเรียบร้อยแล้ว");
@@ -1020,42 +1201,35 @@ function tagPillHtml(tagId, withLabel=true){
 }
 
 /* =====================================================================
-   NEW CHEMOCAL (SCRATCHPAD CALCULATOR) LOGIC
+   POP-UP CALCULATOR WITH SHORTCUTS LOGIC
    ===================================================================== */
-let mainCalcVal = "";
-
-function pressMainCalc(v) {
-  const display = document.getElementById('main-calc-display');
+let calcVal = "";
+function pressCalc(v) {
+  const display = document.getElementById('calc-display');
   if(v === 'C') {
-    mainCalcVal = "";
+    calcVal = "";
   } else if(v === '=') {
     try {
-      let expr = mainCalcVal.replace(/√\(/g, "Math.sqrt(");
-      expr = expr.replace(/×/g, "*");
-      expr = expr.replace(/÷/g, "/");
-      
-      if(expr.includes('_')) {
-        alert("กรุณาแทนที่ช่องว่าง (_) ด้วยตัวเลขก่อนคำนวณ");
+      if(calcVal.includes('_')) {
+        alert("กรุณาเปลี่ยนเครื่องหมายช่องว่าง (_) เป็นตัวเลขเพื่อคำนวณ");
         return;
       }
-      
-      let result = Function('"use strict";return (' + expr + ')')();
-      mainCalcVal = Math.round(result * 1000) / 1000;
-      mainCalcVal = mainCalcVal.toString();
+      let expr = calcVal.replace(/√\(/g, "Math.sqrt(").replace(/×/g, "*").replace(/÷/g, "/");
+      let res = Function('"use strict";return (' + expr + ')')();
+      calcVal = (Math.round(res * 1000) / 1000).toString();
     } catch(e) {
-      alert("รูปแบบสมการไม่ถูกต้อง โปรดตรวจสอบวงเล็บและตัวดำเนินการอีกครั้ง");
+      calcVal = "Error";
     }
   } else {
-    mainCalcVal += v;
+    if(calcVal === "Error") calcVal = "";
+    calcVal += v;
   }
-  display.value = mainCalcVal;
-  display.focus();
+  display.value = calcVal;
 }
-
 function insertFormula(str) {
-  const display = document.getElementById('main-calc-display');
-  mainCalcVal = str;
-  display.value = mainCalcVal;
+  calcVal = str;
+  const display = document.getElementById('calc-display');
+  display.value = calcVal;
   display.focus();
 }
 
@@ -1146,7 +1320,6 @@ document.getElementById("btn-add-custom-tag").addEventListener("click", () => {
   buildTagCheckboxes();
 });
 
-// ฟังก์ชันแก้ไข Tag ที่สร้างเอง
 function editCustomTag(id, e) {
   e.preventDefault(); e.stopPropagation();
   const currentLabel = CUSTOM_TAGS[id].label;
@@ -1161,23 +1334,17 @@ function editCustomTag(id, e) {
   }
 }
 
-// ฟังก์ชันลบ Tag ที่สร้างเอง
 function deleteCustomTag(id, e) {
   e.preventDefault(); e.stopPropagation();
   if(confirm(`ต้องการลบ Tag "${CUSTOM_TAGS[id].label}" ใช่หรือไม่?\n(Tag นี้จะถูกลบออกจากข้อมูลยาและสูตรยาทุกตัวอัตโนมัติ)`)) {
     delete CUSTOM_TAGS[id];
     TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
-    
-    // Cleanup tags from Drugs
     DRUGS.forEach(d => { if(d.tags) d.tags = d.tags.filter(t => t !== id); });
-    
-    // Cleanup tags from Regimens
     REGIMENS.forEach(r => {
       if(r.steps) r.steps.forEach(s => {
         if(s.tags) s.tags = s.tags.filter(t => t !== id);
       });
     });
-
     saveData();
     buildTagCheckboxes();
     buildFilterUI();
@@ -1342,7 +1509,7 @@ function deleteDrug(id) {
 }
 
 /* =====================================================================
-   REGIMENS TAB (Grid View)
+   REGIMENS TAB
    ===================================================================== */
 function renderRegimens() {
   const grid = document.getElementById("regimen-grid");
@@ -1683,8 +1850,7 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   }
   if(steps.length === 0){ errEl.textContent = "กรุณาเพิ่มขั้นตอนการให้ยาอย่างน้อย 1 ขั้นตอน"; errEl.style.display="block"; return; }
 
-  const refs = [...document.querySelectorAll("#regimen-ref-input-list input")]
-    .map(i => i.value.trim()).filter(Boolean);
+  const refs = [...document.querySelectorAll("#regimen-ref-input-list input")].map(i => i.value.trim()).filter(Boolean);
 
   errEl.style.display = "none";
   
@@ -1709,6 +1875,159 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
 });
 
 /* =====================================================================
+   CHEMOCAL ORIGINAL FUNCTIONS
+   ===================================================================== */
+let selectedWeightBasis = null;
+let currentWeights = null;
+let currentBSA = null;
+let currentCrCl = null;
+
+function numVal(id){
+  const el = document.getElementById(id);
+  if(!el) return null;
+  const v = parseFloat(el.value);
+  return isNaN(v) ? null : v;
+}
+
+function computeIBW(heightCm, sex){
+  let heightIn = heightCm / 2.54;
+  if(heightIn < 60) heightIn = 60;
+  const base = sex === "female" ? 45.5 : 50;
+  return base + 2.3 * (heightIn - 60);
+}
+function computeABW(tbw, ibw){ return ibw + 0.4 * (tbw - ibw); }
+function recommendWeightBasis(tbw, ibw){ return (tbw / ibw) > 1.2 ? "abw" : "tbw"; }
+function computeBSA(heightCm, weightKg){ return Math.sqrt((heightCm * weightKg) / 3600); }
+function computeCrCl(age, weightKg, scr, sex){
+  let crcl = ((140 - age) * weightKg) / (72 * scr);
+  if(sex === "female") crcl *= 0.85;
+  return crcl;
+}
+
+function updatePatientCalc(){
+  const sex = document.getElementById("pt-sex").value;
+  const age = numVal("pt-age");
+  const height = numVal("pt-height");
+  const weight = numVal("pt-weight");
+  const scr = numVal("pt-scr");
+  const bsaInput = document.getElementById("pt-bsa-manual");
+
+  const weightRow = document.getElementById("weight-chip-row");
+  const note = document.getElementById("weight-rec-note");
+
+  if(height === null || weight === null || height <= 0 || weight <= 0){
+    weightRow.innerHTML = ""; note.textContent = "";
+    document.getElementById("stat-crcl").textContent = "—";
+    currentWeights = null; currentCrCl = null;
+    currentBSA = parseFloat(bsaInput.value) || null;
+    refreshAllCalculators();
+    return;
+  }
+
+  const tbw = weight;
+  const ibw = computeIBW(height, sex);
+  const abw = computeABW(tbw, ibw);
+  const recommended = recommendWeightBasis(tbw, ibw);
+  if(selectedWeightBasis === null) selectedWeightBasis = recommended;
+  currentWeights = { tbw, ibw, abw, recommended };
+
+  const weightDefs = [
+    { key:"tbw", label:"TBW · น้ำหนักจริง", value:tbw },
+    { key:"ibw", label:"IBW · น้ำหนักมาตรฐาน", value:ibw },
+    { key:"abw", label:"ABW · น้ำหนักปรับ", value:abw },
+  ];
+  weightRow.innerHTML = weightDefs.map(w => `
+    <button class="weight-chip" data-key="${w.key}" aria-pressed="${selectedWeightBasis===w.key}" type="button">
+      <div class="wc-label">${w.label} ${w.key===recommended ? '<span class="wc-tag">แนะนำ</span>' : ""}</div>
+      <div class="wc-value">${w.value.toFixed(1)} กก.</div>
+    </button>
+  `).join("");
+  weightRow.querySelectorAll(".weight-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      selectedWeightBasis = chip.dataset.key;
+      updatePatientCalc();
+    });
+  });
+
+  note.textContent = recommended === "abw"
+    ? "น้ำหนักจริงมากกว่า IBW เกิน 20% ระบบแนะนำให้ใช้ ABW เพื่อใช้คำนวณ BSA, mg/kg และ CrCl"
+    : "น้ำหนักจริงอยู่ในช่วงที่เหมาะสม ระบบแนะนำให้ใช้ TBW (น้ำหนักจริง) เพื่อใช้คำนวณ BSA, mg/kg และ CrCl";
+
+  const usedWeight = currentWeights[selectedWeightBasis];
+  
+  const calculatedBSA = computeBSA(height, usedWeight);
+  if (document.activeElement !== bsaInput) {
+    bsaInput.value = calculatedBSA.toFixed(2);
+  }
+  currentBSA = parseFloat(bsaInput.value) || null;
+
+  if(age !== null && scr !== null && scr > 0 && age >= 0){
+    currentCrCl = computeCrCl(age, usedWeight, scr, sex);
+    document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
+  } else {
+    currentCrCl = null;
+    document.getElementById("stat-crcl").textContent = "—";
+  }
+
+  refreshAllCalculators();
+}
+
+function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, denomLabel){
+  const container = document.getElementById(containerId);
+  if(orderedDose === null || target === null || denom === null || denom <= 0 || target <= 0){
+    container.innerHTML = `<p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>`;
+    return;
+  }
+  const actual = orderedDose / denom;
+  const diffPercent = ((actual - target) / target) * 100;
+  const inRange = Math.abs(diffPercent) <= 10;
+  const lowDose = target * 0.9 * denom;
+  const highDose = target * 1.1 * denom;
+  const targetDose = target * denom;
+
+  container.innerHTML = `
+    <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${denom.toFixed(2)}</span></div>
+    <div class="result-row"><span class="r-label">ขนาดยาที่ให้จริงคิดเป็น</span><span class="r-value ${inRange?"good":"bad"}">${actual.toFixed(2)} ${unitLabel}</span></div>
+    <div class="result-row"><span class="r-label">ผลต่างจากเป้าหมาย</span><span class="r-value ${inRange?"good":"bad"}">${diffPercent>0?"+":""}${diffPercent.toFixed(1)}%</span></div>
+    ${inRange ? `
+      <div class="alert-box good">
+        ${iconHtml("check")}
+        <div><strong>อยู่ในช่วงที่ยอมรับได้ (±10%)</strong>ขนาดยาที่จะให้สอดคล้องกับเป้าหมายที่กำหนด</div>
+      </div>
+    ` : `
+      <div class="alert-box bad">
+        ${iconHtml("alert")}
+        <div><strong>ไม่อยู่ในช่วง ±10% ของเป้าหมาย</strong>ขนาดยาที่อยู่ในช่วงยอมรับได้: ${lowDose.toFixed(1)} – ${highDose.toFixed(1)} mg (ตรงเป้าหมาย ${targetDose.toFixed(1)} mg)</div>
+      </div>
+    `}
+  `;
+}
+
+function refreshBSACalc(){ renderDoseCheck("bsa-result", numVal("bsa-dose"), numVal("bsa-target"), currentBSA, "mg/m²", "BSA ที่ใช้คำนวณ (m²)"); }
+function refreshWeightCalc(){
+  const denom = currentWeights ? currentWeights[selectedWeightBasis] : null;
+  const label = `น้ำหนักที่ใช้คำนวณ — ${selectedWeightBasis ? selectedWeightBasis.toUpperCase() : "-"} (กก.)`;
+  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label);
+}
+function refreshCalvertCalc(){
+  let denom = null;
+  if(currentCrCl !== null){
+    const gfrCapped = Math.min(currentCrCl, 125);
+    denom = gfrCapped + 25;
+  }
+  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "GFR (cap 125) + 25 ที่ใช้คำนวณ");
+}
+function refreshAllCalculators(){ refreshBSACalc(); refreshWeightCalc(); refreshCalvertCalc(); }
+
+function resetPatientProfile(){
+  ["pt-age","pt-height","pt-weight","pt-scr","pt-bsa-manual"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("pt-sex").value = "male";
+  ["bsa-target","bsa-dose","wt-target","wt-dose","cb-target","cb-dose"].forEach(id => document.getElementById(id).value = "");
+  selectedWeightBasis = null;
+  updatePatientCalc();
+}
+
+/* =====================================================================
    INIT & EVENT LISTENERS
    ===================================================================== */
 document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -1730,7 +2049,6 @@ document.getElementById("clear-filters-btn").addEventListener("click", () => {
 
 document.getElementById("drug-search").addEventListener("input", e => { searchQuery = e.target.value; renderDrugs(); });
 
-// Handlers for closing modals
 document.getElementById("detail-close").addEventListener("click", closeDetail);
 
 function closeInfoModal() {
@@ -1749,7 +2067,7 @@ document.getElementById("backdrop").addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", e => { 
-  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); } 
+  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); document.getElementById('calc-overlay').classList.remove('show'); } 
 });
 
 document.getElementById("open-add-drug").addEventListener("click", () => openDrugDrawer());
@@ -1763,6 +2081,16 @@ document.getElementById("cancel-regimen-drawer").addEventListener("click", close
 document.getElementById("add-step-btn").addEventListener("click", () => addStep());
 document.getElementById("add-regimen-ref-input-btn").addEventListener("click", () => createRefInputRow("regimen"));
 
+["pt-sex","pt-age","pt-height","pt-weight","pt-scr", "pt-bsa-manual"].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener("input", updatePatientCalc);
+  el.addEventListener("change", updatePatientCalc);
+});
+["bsa-target","bsa-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshBSACalc));
+["wt-target","wt-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshWeightCalc));
+["cb-target","cb-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshCalvertCalc));
+document.getElementById("pt-reset").addEventListener("click", resetPatientProfile);
+
 function showToast(msg){
   const t = document.getElementById("success-toast");
   document.getElementById("toast-msg").textContent = msg;
@@ -1770,9 +2098,7 @@ function showToast(msg){
   setTimeout(() => t.classList.remove("show"), 3000);
 }
 
-// 🛑 Start Application 🛑
 initDatabase();
-
 </script>
 </body>
 </html>
