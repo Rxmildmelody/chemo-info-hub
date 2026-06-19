@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChemoGuide — Drug Information & Sequencing</title>
+<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
 <link rel="icon" type="image/png" href="logo_rbh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -300,7 +301,7 @@
   .step-marker{
     flex-shrink:0; width:36px; height:36px; border-radius:50%;
     background:var(--surface); border:2px solid var(--blue);
-    color:var(--blue); font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px;
+    color:var(--blue); font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px;
     display:flex; align-items:center; justify-content:center;
     position:relative; z-index:2;
   }
@@ -318,7 +319,7 @@
   .step-content{flex:1; padding-top:4px;}
   .step-top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
   .step-top h4{font-size:15px; font-weight:600; color:var(--ink); font-family:'Inter',sans-serif;}
-  .step-form{font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
+  .step-form{font-size:12.5px; color:var(--muted); font-family:'Inter',sans-serif;}
   .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
   .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
 
@@ -332,10 +333,12 @@
 
   .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px;}
   .field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px;}
+  
+  /* แก้ไขฟอนต์ช่องกรอกข้อมูลเป็น Inter */
   .field input, .field select, .field textarea{
     width:100%; border:1px solid var(--line); background:#F5F8FC;
     border-radius:8px; padding:9px 11px; font-size:14px; color:var(--ink);
-    font-family:'IBM Plex Mono',monospace;
+    font-family:'Inter',sans-serif;
   }
   .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--blue); outline:none;}
 
@@ -347,7 +350,8 @@
   .weight-chip[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-soft);}
   .weight-chip .wc-label{font-size:11.5px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:5px;}
   .weight-chip[aria-pressed="true"] .wc-label{color:var(--blue-dark);}
-  .weight-chip .wc-value{font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; margin-top:3px;}
+  /* เปลี่ยนเป็นฟอนต์สวยงาม Space Grotesk */
+  .weight-chip .wc-value{font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; margin-top:3px;}
   .weight-chip .wc-tag{
     font-size:10px; font-weight:700; color:var(--blue); background:var(--blue-soft);
     padding:1px 6px; border-radius:999px; text-transform:uppercase;
@@ -358,7 +362,8 @@
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
   .stat-box{background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
-  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px; color:var(--blue-dark);}
+  /* เปลี่ยนเป็นฟอนต์สวยงาม Space Grotesk และขยายขนาด */
+  .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
   /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข (Geometric Interactive Box) */
   .interactive-formula-box {
@@ -368,15 +373,16 @@
   .interactive-formula-box:hover { background: var(--blue-soft); border-color: var(--blue); }
   .formula-header-trigger { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
   .interactive-formula-box:hover .formula-header-trigger { color: var(--blue-dark); }
-  .formula-details-content { display: none; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.6; color: var(--ink); }
+  .formula-details-content { display: none; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; font-family: 'Inter', sans-serif; font-size: 13.5px; line-height: 1.6; color: var(--ink); }
   .formula-details-content.show { display: block; }
   .formula-title { font-weight: 700; color: var(--blue-dark); display: block; margin-bottom: 2px; }
-  .formula-substituted { background: #FFFFFF; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); display: inline-block; margin-top: 4px; color: #1B7A4A; font-weight: 600; }
+  .formula-substituted { background: #FFFFFF; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); display: inline-block; margin-top: 4px; color: #1B7A4A; font-weight: 600; font-family:'Space Grotesk',sans-serif; }
 
   .result-block{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
   .result-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:6px 0; font-size:13.5px;}
   .result-row .r-label{color:var(--muted); flex-shrink:0;}
-  .result-row .r-value{font-family:'IBM Plex Mono',monospace; font-weight:600; text-align:right;}
+  /* เปลี่ยนเป็นฟอนต์สวยงาม Space Grotesk */
+  .result-row .r-value{font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; text-align:right;}
   .result-row .r-value.good{color:#1B7A4A;}
   .result-row .r-value.bad{color:var(--hazard);}
   .alert-box{ margin-top:12px; display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:9px; font-size:13px; }
@@ -589,6 +595,38 @@
   }
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
+
+  /* ===== Utilities ===== */
+  .btn-primary{
+    background:var(--blue); color:#fff; border:none;
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+    transition:background .15s;
+  }
+  .btn-primary:hover{background:var(--blue-dark);}
+  .btn-secondary{
+    background:var(--surface); color:var(--ink); border:1px solid var(--line);
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+  }
+  .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
+
+  /* ปรับแต่ง Toast แจ้งเตือน ให้ซ่อนสนิทเมื่อยังไม่โชว์ */
+  .success-toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+    background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
+    padding:11px 20px; border-radius:10px; z-index:60;
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.18);
+    transition:all .25s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .success-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  .success-toast svg{width:16px; height:16px;}
 </style>
 </head>
 <body>
@@ -657,6 +695,7 @@
     <div class="drug-grid" id="regimen-grid"></div>
   </section>
 
+  <!-- ===== หน้าแรก CHEMOCAL แก้ไขแสดงกล่องไอคอนและแทนค่าตัวเลขจริง ===== -->
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
@@ -698,6 +737,7 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
+      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
@@ -709,6 +749,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -741,6 +782,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -791,6 +833,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -817,6 +860,7 @@
 
 <div class="backdrop" id="backdrop"></div>
 
+<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -831,6 +875,7 @@
   <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
+<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
