@@ -26,9 +26,11 @@
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   
-  /* ปรับสีพื้นหลังเป็น Gradient ฟ้า-เทา-ขาว สไตล์โมเดิร์นตามสั่ง */
+  /* ปรับสีพื้นหลังเป็น Gradient พร้อมลวดลายเรขาคณิตจางๆ (Geometric Grid Line) ให้ดูสวยงามมีมิติขึ้น */
   body{
-    background: linear-gradient(135deg, #d6e0ea 0%, #eef2f5 50%, #ffffff 100%);
+    background: 
+      linear-gradient(135deg, rgba(214, 224, 234, 0.5) 0%, rgba(238, 242, 245, 0.6) 50%, rgba(255, 255, 255, 0.7) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M9 0h10v1H9v11H8V1h-8V0h9zm30 0h10v1H39v11h-1V1h-8V0h9zM9 30h10v1H9v11H8V31h-8v-1h9zm30 0h10v1H39v11h-1V31h-8v-1h9z' fill='%232454d6' fill-opacity='0.025' fill-rule='evenodd'/%3E%3C/svg%3E");
     background-attachment: fixed;
     color:var(--ink);
     font-family:'Inter',system-ui,-apple-system,sans-serif;
@@ -46,7 +48,7 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
 
-  /* ตั้งค่าให้ปัดตกบรรทัดได้สำหรับข้อมูลที่ยาว */
+  /* รองรับข้อความยาว ปัดตกบรรทัดได้อัตโนมัติ ไม่ตกขอบจอ */
   .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span, .sc-value {
     white-space: pre-wrap;
     word-break: break-word;
@@ -100,7 +102,7 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;}
 
-  /* ===== Toolbar (search + filters) ===== */
+  /* ===== Toolbar ===== */
   .toolbar{
     background:var(--surface);
     border:1px solid var(--line);
@@ -123,7 +125,7 @@
   .clear-filters{
     border:1px solid var(--line); background:var(--surface);
     color:var(--muted); font-size:13px; font-weight:600;
-    padding:9px 14px; border-radius:9px; white-space:nowrap;
+    padding:9px 14px; border-radius:999px; white-space:nowrap;
     transition:border-color .15s ease, color .15s ease;
   }
   .clear-filters:hover{border-color:var(--blue); color:var(--blue);}
@@ -191,7 +193,7 @@
   }
   .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
 
-  /* ===== Detail Panel (เปลี่ยนเป็น Pop-up Window กลางหน้าจอตามสั่ง) ===== */
+  /* ===== Detail Panel (Pop-up Window) ===== */
   .backdrop{
     position:fixed; inset:0; background:rgba(16,24,45,0.45);
     opacity:0; visibility:hidden; transition:opacity .22s ease;
@@ -320,12 +322,7 @@
   .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
   .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
 
-  footer{
-    max-width:1140px; margin:0 auto; padding:10px 24px 50px;
-    color:var(--muted); font-size:12px; text-align:center;
-  }
-
-  /* ===== ChemoCal & Calculator Layout ===== */
+  /* ===== ChemoCal Layout ===== */
   .calc-card{
     background:var(--surface); border:1px solid var(--line); box-shadow: var(--shadow);
     border-radius:var(--radius); padding:20px 22px; margin-bottom:16px;
@@ -357,10 +354,11 @@
   }
   .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
 
+  /* แผงแสดงผลลัพธ์ข้อมูลผู้ป่วย */
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
   .stat-box{background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
-  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px;}
+  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px; color:var(--blue-dark);}
   
   .result-block{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
   .result-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:6px 0; font-size:13.5px;}
@@ -375,30 +373,24 @@
   .alert-box strong{display:block; margin-bottom:2px;}
   .placeholder-text{font-size:13px; color:var(--muted); font-style:italic;}
 
-  /* Formula Templates */
-  .formula-blank-template {
-    background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 12px; border-radius: 8px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; margin-top: 10px; color: var(--blue-dark);
-  }
-  .btn-formula {
-    background: none; border: 1px solid var(--line); color: var(--muted); padding: 4px 8px;
-    border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-formula:hover { background: #F5F8FC; color: var(--ink); }
-
-  /* ===== Pop-up Calculator Modal with Shortcut Formulas ===== */
+  /* ===== เครื่องคิดเลข Pop-up ขนาดใหญ่ขึ้นพร้อมสูตรลัดเป็นข้อความกำกับเด่นชัด ===== */
   .calc-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.45); z-index:90; display:none; justify-content:center; align-items:center; backdrop-filter: blur(2px); }
   .calc-overlay.show { display:flex; }
-  .calc-container { background:var(--surface); padding:22px; border-radius:16px; width:360px; box-shadow:var(--shadow); }
-  .calc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-  .calc-header h3 { font-size:16px; margin:0; color:var(--blue-dark); }
-  .formula-shortcuts-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
-  .btn-shortcut { background: var(--blue-soft); color: var(--blue-dark); border: 1px solid rgba(36,84,214,0.15); border-radius: 6px; padding: 5px 8px; font-size: 11px; font-weight: 600; }
-  .btn-shortcut:hover { background: var(--blue); color: #fff; }
-  .calc-display { width:100%; height:55px; font-size:20px; text-align:right; margin-bottom:15px; padding:10px; font-family:'IBM Plex Mono', monospace; border:1px solid var(--line); border-radius:8px; background:#F8FAFC; outline:none; color: var(--ink); }
-  .calc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
-  .calc-btn { padding:14px 0; font-size:18px; font-weight:600; border-radius:8px; border:1px solid var(--line); background:#F5F8FC; cursor:pointer; transition: all 0.1s; }
-  .calc-btn:hover { background:var(--line); }
+  
+  /* ขยายขนาด Container หน้าต่างให้กว้างขวางขึ้นเป็น 460px */
+  .calc-container { background:var(--surface); padding:26px 28px; border-radius:20px; width:460px; max-width:92vw; box-shadow:var(--shadow); }
+  .calc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .calc-header h3 { font-size:16px; margin:0; color:var(--blue-dark); font-weight: 700; }
+  
+  .formula-shortcuts-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .btn-shortcut { background: var(--blue-soft); color: var(--blue-dark); border: 1px solid rgba(36,84,214,0.15); border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-weight: 600; transition: all 0.15s; }
+  .btn-shortcut:hover { background: var(--blue); color: #fff; transform: translateY(-1px); }
+  
+  /* ปรับช่องกระจกแสดงผลตัวเลขให้ใหญ่และคมชัดขึ้น */
+  .calc-display { width:100%; height:60px; font-size:22px; text-align:right; margin-bottom:16px; padding:12px; font-family:'IBM Plex Mono', monospace; border:1px solid var(--line); border-radius:10px; background:#F8FAFC; outline:none; color: var(--ink); }
+  .calc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:11px; }
+  .calc-btn { padding:16px 0; font-size:20px; font-weight:600; border-radius:10px; border:1px solid var(--line); background:#F5F8FC; cursor:pointer; transition: all 0.1s; }
+  .calc-btn:hover { background:var(--line); transform: translateY(0.5px); }
   .calc-btn.op { background:var(--blue-soft); color:var(--blue-dark); border-color:var(--blue-soft); }
   .calc-btn.eq { background:var(--blue); color:#fff; border-color:var(--blue); grid-column:span 2; }
 
@@ -495,11 +487,12 @@
   }
   .form-section-label:first-child{margin-top:0;}
   
-  /* ปรับแต่งความกว้าง/ความสูงเพื่อให้ Textarea ความคงตัวเหมาะสม */
+  /* ขยายขนาด Textarea ฟอร์มกรอกความคงตัว ยืดหยุ่นปัดบรรทัดอัตโนมัติ */
   .field textarea{
     width:100%; border:1px solid var(--line); background:#F5F8FC;
     border-radius:8px; padding:9px 11px; font-size:13.5px; color:var(--ink);
-    font-family:'Inter',sans-serif; resize:vertical; min-height:60px;
+    font-family:'Inter',sans-serif; resize:vertical; min-height:64px;
+    white-space: pre-wrap; word-break: break-word;
   }
   
   .tags-check-grid{
@@ -520,7 +513,6 @@
   }
   .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
   
-  /* Tag Action Buttons */
   .tag-actions { margin-left: auto; display: flex; gap: 4px; }
   .tag-action-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 2px; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
   .tag-checkbox:hover .tag-action-btn { opacity: 1; }
@@ -607,7 +599,7 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== Utility elements ===== */
+  /* ===== Utilities ===== */
   .btn-primary{
     background:var(--blue); color:#fff; border:none;
     font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
@@ -703,7 +695,7 @@
     <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
       <button class="btn-primary" onclick="document.getElementById('calc-overlay').classList.add('show')" style="display: flex; align-items: center; gap: 6px;">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
-        เครื่องคิดเลขพร้อมสูตรทางลัด
+        เครื่องคิดเลขพร้อมสูตรลัด
       </button>
     </div>
 
@@ -752,14 +744,9 @@
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
           <div class="stat-value" id="stat-crcl">—</div>
         </div>
-      </div>
-
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">CrCl</strong> = ( ( 140 - [ <span style="color:var(--muted);">อายุ</span> ] ) × [ <span style="color:var(--muted);">น้ำหนัก</span> ] ) ÷ ( 72 × [ <span style="color:var(--muted);">SCr</span> ] ) <br>
-          <span style="font-size: 11px; color:var(--muted);">* หากเป็นเพศหญิง ให้คูณ 0.85 เพิ่มตอนท้าย</span><br><br>
-          <strong style="color:var(--ink);">BSA (Mosteller)</strong> = √ ( ( [ <span style="color:var(--muted);">ส่วนสูง cm</span> ] × [ <span style="color:var(--muted);">น้ำหนัก kg</span> ] ) ÷ 3600 )
+        <div class="stat-box">
+          <div class="stat-label">BSA (Mosteller)</div>
+          <div class="stat-value" id="stat-bsa">—</div>
         </div>
       </div>
     </div>
@@ -776,13 +763,6 @@
         <div class="field">
           <label for="bsa-dose">ขนาดยาที่จะให้จริง (mg)</label>
           <input id="bsa-dose" type="number" min="0" step="0.1" placeholder="เช่น 130">
-        </div>
-      </div>
-      
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">BSA</span> ]
         </div>
       </div>
 
@@ -805,13 +785,6 @@
         </div>
       </div>
 
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">น้ำหนักที่เลือกใช้</span> ]
-        </div>
-      </div>
-
       <div class="result-block" id="wt-result">
         <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
       </div>
@@ -831,13 +804,6 @@
         </div>
       </div>
 
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">Target AUC</span> ] × ( [ <span style="color:var(--muted);">CrCl (สูงสุดไม่เกิน 125)</span> ] + 25 )
-        </div>
-      </div>
-
       <div class="result-block" id="cb-result">
         <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
       </div>
@@ -853,7 +819,7 @@
 <div class="backdrop" id="backdrop"></div>
 
 <div class="info-modal" id="info-modal">
-  <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำโครงการ</h3>
+  <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
     จัดทำโดย นสภ.ปิยฉัตร เทศสวัสดิ์<br>
     คณะเภสัชศาสตร์ มหาวิทยาลัยนเรศวร<br>
@@ -911,7 +877,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องรับข้อมูลปัดตกบรรทัดได้อัตโนมัติ)</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องข้อมูลปัดตกขึ้นบรรทัดใหม่ได้ยาวๆ)</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
@@ -919,30 +885,30 @@
       </div>
       <div class="field">
         <label for="nf-recon-rt">ความคงตัว Recon — อุณหภูมิห้อง</label>
-        <textarea id="nf-recon-rt" placeholder="ระบุความคงตัวยาวๆ ได้ ช่องจะตัดคำขึ้นบรรทัดใหม่ให้"></textarea>
+        <textarea id="nf-recon-rt" placeholder="ระบุข้อมูลยาวๆ ได้ ช่องจะปัดตกบรรทัดให้อัตโนมัติ"></textarea>
       </div>
       <div class="field">
         <label for="nf-recon-fr">ความคงตัว Recon — ตู้เย็น</label>
-        <textarea id="nf-recon-fr" placeholder="เช่น 7 วันในตู้เย็น 2-8 องศา..."></textarea>
+        <textarea id="nf-recon-fr" placeholder="ใส่รายละเอียดการเก็บความคงตัว..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-rt">ความคงตัว Dilute — อุณหภูมิห้อง</label>
-        <textarea id="nf-dil-rt" placeholder="ใส่ข้อมูลรายละเอียดสารน้ำเจือจาง..."></textarea>
+        <textarea id="nf-dil-rt" placeholder="ใส่รายละเอียดสารน้ำหลังเจือจาง..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-fr">ความคงตัว Dilute — ตู้เย็น</label>
-        <textarea id="nf-dil-fr" placeholder="ใส่ข้อกำหนดความคงตัวยาวๆ..."></textarea>
+        <textarea id="nf-dil-fr" placeholder="เช่น สารน้ำมีความคงตัว 14 วันในตู้เย็น..."></textarea>
       </div>
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-maxconc">Max Concentration</label>
-        <textarea id="nf-maxconc" placeholder="เช่น ไม่เกิน 10 mg/mL หรืออธิบายสูตรคำนวณประกอบได้"></textarea>
+        <textarea id="nf-maxconc" placeholder="ระบุความเข้มข้นสูงสุดที่แนะนำ..."></textarea>
       </div>
     </div>
 
     <p class="form-section-label">หมายเหตุ / ข้อมูลเพิ่มเติม</p>
     <div class="field" style="margin-bottom:10px;">
       <label for="nf-note">หมายเหตุการให้ยา (แสดงในการ์ด)</label>
-      <textarea id="nf-note" placeholder="เช่น ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing..."></textarea>
+      <textarea id="nf-note" placeholder="เช่น ให้ทาง IV push ช้า ๆ..."></textarea>
     </div>
     <div class="field">
       <label for="nf-detail">ข้อมูลเพิ่มเติม (แสดงในแผงรายละเอียด)</label>
@@ -1017,18 +983,18 @@
 <div class="calc-overlay" id="calc-overlay">
   <div class="calc-container">
     <div class="calc-header">
-      <h3>เครื่องคิดเลขสูตรทดสอบ</h3>
-      <button onclick="document.getElementById('calc-overlay').classList.remove('show')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted); font-weight:bold;">&times;</button>
+      <h3>เครื่องคิดเลขสูตรทางคลินิก</h3>
+      <button onclick="document.getElementById('calc-overlay').classList.remove('show')" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted); font-weight:bold;">&times;</button>
     </div>
     
     <div class="formula-shortcuts-row">
-      <button class="btn-shortcut" onclick="insertFormula('√(( _ * _ ) / 3600)')">BSA (Mosteller)</button>
-      <button class="btn-shortcut" onclick="insertFormula('((140 - _ ) * _ ) / (72 * _ )')">CrCl (Male)</button>
-      <button class="btn-shortcut" onclick="insertFormula('(((140 - _ ) * _ ) / (72 * _ )) * 0.85')">CrCl (Female)</button>
-      <button class="btn-shortcut" onclick="insertFormula('_ * ( _ + 25)')">Calvert (AUC)</button>
+      <button class="btn-shortcut" onclick="insertFormula('√(( [Weight] * [Height] ) / 3600)')">BSA (Mosteller)</button>
+      <button class="btn-shortcut" onclick="insertFormula('((140 - [Age]) * [Weight]) / (72 * [SCr])')">CrCl (Male)</button>
+      <button class="btn-shortcut" onclick="insertFormula('(((140 - [Age]) * [Weight]) / (72 * [SCr])) * 0.85')">CrCl (Female)</button>
+      <button class="btn-shortcut" onclick="insertFormula('[AUC] * ([CrCl] + 25)')">Calvert (AUC)</button>
     </div>
 
-    <input type="text" class="calc-display" id="calc-display" value="" placeholder="เลือกสูตรทางลัด หรือพิมพ์สมการ..." autocomplete="off" oninput="calcVal = this.value">
+    <input type="text" class="calc-display" id="calc-display" value="" placeholder="เลือกสูตรด้านบนแล้วพิมพ์เลขแทนคำในวงเล็บ..." autocomplete="off" oninput="calcVal = this.value">
     
     <div class="calc-grid">
       <button class="calc-btn op" onclick="pressCalc('C')">C</button>
@@ -1210,8 +1176,9 @@ function pressCalc(v) {
     calcVal = "";
   } else if(v === '=') {
     try {
-      if(calcVal.includes('_')) {
-        alert("กรุณาเปลี่ยนเครื่องหมายช่องว่าง (_) เป็นตัวเลขเพื่อคำนวณ");
+      // ดักข้อความตัวแปรภาษาอังกฤษค้างอยู่ ป้องกันสูตรเออร์เรอร์
+      if(/[A-Za-z]/.test(calcVal)) {
+        alert("กรุณาแทนที่ข้อความกำกับตัวแปร (เช่น [Age], [Weight]) ด้วยตัวเลขก่อนกดคำนวณ");
         return;
       }
       let expr = calcVal.replace(/√\(/g, "Math.sqrt(").replace(/×/g, "*").replace(/÷/g, "/");
@@ -1875,7 +1842,7 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
 });
 
 /* =====================================================================
-   CHEMOCAL ORIGINAL FUNCTIONS
+   CHEMOCAL PATIENT LOGIC
    ===================================================================== */
 let selectedWeightBasis = null;
 let currentWeights = null;
@@ -1918,6 +1885,7 @@ function updatePatientCalc(){
   if(height === null || weight === null || height <= 0 || weight <= 0){
     weightRow.innerHTML = ""; note.textContent = "";
     document.getElementById("stat-crcl").textContent = "—";
+    document.getElementById("stat-bsa").textContent = "—";
     currentWeights = null; currentCrCl = null;
     currentBSA = parseFloat(bsaInput.value) || null;
     refreshAllCalculators();
@@ -1960,6 +1928,9 @@ function updatePatientCalc(){
     bsaInput.value = calculatedBSA.toFixed(2);
   }
   currentBSA = parseFloat(bsaInput.value) || null;
+  
+  // อัปเดตข้อมูลกล่องแดชบอร์ดด้านล่างให้มีขนาดใหญ่เท่ากัน
+  document.getElementById("stat-bsa").textContent = currentBSA ? currentBSA.toFixed(2) + " m²" : "—";
 
   if(age !== null && scr !== null && scr > 0 && age >= 0){
     currentCrCl = computeCrCl(age, usedWeight, scr, sex);
@@ -2048,7 +2019,6 @@ document.getElementById("clear-filters-btn").addEventListener("click", () => {
 });
 
 document.getElementById("drug-search").addEventListener("input", e => { searchQuery = e.target.value; renderDrugs(); });
-
 document.getElementById("detail-close").addEventListener("click", closeDetail);
 
 function closeInfoModal() {
