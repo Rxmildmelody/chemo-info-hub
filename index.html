@@ -1557,17 +1557,13 @@ function renderRegimens() {
   }
 
   grid.innerHTML = filtered.map(r => {
-    // จัดการรายชื่อยาให้อยู่ในรูปแบบ Flex Wrap เพื่อให้เว้นบรรทัดได้สวยงาม ไม่ตัดคำแปลกๆ
     const drugs = (r.steps || []).map(s => s.drug).filter(Boolean);
     let drugSummaryHtml = "<span style='font-style:italic;'>ไม่มีข้อมูลยาในสูตรนี้</span>";
     
     if (drugs.length > 0) {
-      drugSummaryHtml = `<div style="display:flex; flex-wrap:wrap; gap:4px 6px; align-items:center;">` +
-        drugs.map((d, index) => {
-          const isLast = index === drugs.length - 1;
-          // บังคับ (white-space:nowrap) เพื่อไม่ให้ชื่อยา 1 ตัว ถูกหักครึ่งบรรทัด
-          return `<span style="white-space:nowrap;">${d}</span>${!isLast ? `<span style="color:#94A3B8; font-weight:400;">+</span>` : ""}`;
-        }).join("") +
+      // เปลี่ยนเป็นแสดงแบบ Bullet แนวตั้ง และลดช่องไฟระหว่างบรรทัด
+      drugSummaryHtml = `<div style="display:flex; flex-direction:column; gap:2px;">` +
+        drugs.map(d => `<span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">- ${d}</span>`).join("") +
       `</div>`;
     }
 
@@ -1580,7 +1576,8 @@ function renderRegimens() {
           </div>
           ${r.cycle ? `<span class="drug-class" style="flex-shrink:0;">${r.cycle}</span>` : ""}
         </div>
-        <div class="drug-card-note" style="margin-top:12px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
+        <!-- ปรับ margin-top จาก 12px เหลือ 6px เพื่อดึงรายชื่อยาให้ขยับขึ้นมาติดกับชื่อสูตรมากขึ้น -->
+        <div class="drug-card-note" style="margin-top:6px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
           ${drugSummaryHtml}
         </div>
       </button>
