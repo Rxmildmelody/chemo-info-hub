@@ -1561,14 +1561,14 @@ function renderRegimens() {
     let drugSummaryHtml = "<span style='font-style:italic;'>ไม่มีข้อมูลยาในสูตรนี้</span>";
     
     if (drugs.length > 0) {
-      // เปลี่ยนเป็นแสดงแบบ Bullet แนวตั้ง และลดช่องไฟระหว่างบรรทัด
       drugSummaryHtml = `<div style="display:flex; flex-direction:column; gap:2px;">` +
         drugs.map(d => `<span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">- ${d}</span>`).join("") +
       `</div>`;
     }
 
-return `
-      <button class="drug-card" data-id="${r.id}" type="button" onclick="openRegimenDetail('${r.id}')" style="justify-content:flex-start; align-items:flex-start;">
+    // เปลี่ยนแท็ก <button> เป็น <div> ตรงนี้ครับปัญหาถึงจะจบชัวร์
+    return `
+      <div class="drug-card" data-id="${r.id}" onclick="openRegimenDetail('${r.id}')" style="justify-content:flex-start; align-items:flex-start;">
         <div class="drug-card-head" style="width:100%; align-items:flex-start; gap:12px;">
           <div class="drug-card-name" style="text-align:left; flex:1;">
             <h3 style="font-size:17px; color:var(--blue-dark); margin-bottom:2px;">${r.name}</h3>
@@ -1580,9 +1580,7 @@ return `
         <div class="drug-card-note" style="margin-top:6px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
           ${drugSummaryHtml}
         </div>
-
-        <div style="flex-grow: 1;"></div>
-      </button>
+      </div>
     `;
   }).join("");
 }
