@@ -1577,9 +1577,11 @@ return `
           ${r.cycle ? `<span class="drug-class" style="flex-shrink:0;">${r.cycle}</span>` : ""}
         </div>
         
-        <div class="drug-card-note" style="margin-top:8px; margin-bottom:auto; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
+        <div class="drug-card-note" style="margin-top:6px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
           ${drugSummaryHtml}
         </div>
+
+        <div style="flex-grow: 1;"></div>
       </button>
     `;
   }).join("");
