@@ -1567,7 +1567,7 @@ function renderRegimens() {
       `</div>`;
     }
 
-    return `
+return `
       <button class="drug-card" data-id="${r.id}" type="button" onclick="openRegimenDetail('${r.id}')" style="justify-content:flex-start; align-items:flex-start;">
         <div class="drug-card-head" style="width:100%; align-items:flex-start; gap:12px;">
           <div class="drug-card-name" style="text-align:left; flex:1;">
@@ -1576,8 +1576,8 @@ function renderRegimens() {
           </div>
           ${r.cycle ? `<span class="drug-class" style="flex-shrink:0;">${r.cycle}</span>` : ""}
         </div>
-        <!-- ปรับ margin-top จาก 12px เหลือ 6px เพื่อดึงรายชื่อยาให้ขยับขึ้นมาติดกับชื่อสูตรมากขึ้น -->
-        <div class="drug-card-note" style="margin-top:6px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
+        
+        <div class="drug-card-note" style="margin-top:8px; margin-bottom:auto; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
           ${drugSummaryHtml}
         </div>
       </button>
