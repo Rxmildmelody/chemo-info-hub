@@ -659,6 +659,62 @@
     line-height: 1.6;
     background: transparent;
   }
+  /* =====================================================================
+     แยกสีโซนการคำนวณในหน้า ChemoCal (Minimalist Color Coding)
+     ===================================================================== */
+
+  /* 1. ข้อมูลผู้ป่วย (คงโทนสีฟ้า Theme เดิมของเว็บ) */
+  #tab-chemocal .calc-card:nth-of-type(1) {
+    border-top: 4px solid var(--blue);
+  }
+  
+  /* 2. ขนาดยาตาม BSA (โทนสีเขียวมินต์) */
+  #tab-chemocal .calc-card:nth-of-type(2) {
+    border-top: 4px solid #10B981; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) h3 { 
+    color: #047857; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) .field input {
+    background: #F0FDF4; /* สีพื้นหลังช่องกรอกสีเขียวอ่อนมาก */
+    border-color: #A7F3D0;
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) .field input:focus {
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  }
+
+  /* 3. ขนาดยาตามน้ำหนักตัว (โทนสีม่วงอ่อน) */
+  #tab-chemocal .calc-card:nth-of-type(3) {
+    border-top: 4px solid #8B5CF6; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) h3 { 
+    color: #6D28D9; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) .field input {
+    background: #F5F3FF; /* สีพื้นหลังช่องกรอกสีม่วงอ่อนมาก */
+    border-color: #DDD6FE;
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) .field input:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  }
+
+  /* 4. Calvert Formula (โทนสีส้ม/เหลืองอำพัน) */
+  #tab-chemocal .calc-card:nth-of-type(4) {
+    border-top: 4px solid #F59E0B; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) h3 { 
+    color: #B45309; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) .field input {
+    background: #FFFBEB; /* สีพื้นหลังช่องกรอกสีส้มอ่อนมาก */
+    border-color: #FDE68A;
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) .field input:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  }
 </style>
 </head>
 <body>
