@@ -158,7 +158,7 @@
  /* ===== Grid Cards ===== */
   .drug-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
     gap:14px;
   }
   .drug-card{
@@ -1557,20 +1557,32 @@ function renderRegimens() {
   }
 
   grid.innerHTML = filtered.map(r => {
-    const drugSummary = (r.steps || []).map(s => s.drug).filter(Boolean).join(" + ");
+    // จัดการรายชื่อยาให้อยู่ในรูปแบบ Flex Wrap เพื่อให้เว้นบรรทัดได้สวยงาม ไม่ตัดคำแปลกๆ
+    const drugs = (r.steps || []).map(s => s.drug).filter(Boolean);
+    let drugSummaryHtml = "<span style='font-style:italic;'>ไม่มีข้อมูลยาในสูตรนี้</span>";
+    
+    if (drugs.length > 0) {
+      drugSummaryHtml = `<div style="display:flex; flex-wrap:wrap; gap:4px 6px; align-items:center;">` +
+        drugs.map((d, index) => {
+          const isLast = index === drugs.length - 1;
+          // บังคับ (white-space:nowrap) เพื่อไม่ให้ชื่อยา 1 ตัว ถูกหักครึ่งบรรทัด
+          return `<span style="white-space:nowrap;">${d}</span>${!isLast ? `<span style="color:#94A3B8; font-weight:400;">+</span>` : ""}`;
+        }).join("") +
+      `</div>`;
+    }
 
     return `
-      <button class="drug-card" data-id="${r.id}" type="button" onclick="openRegimenDetail('${r.id}')">
-        <div class="drug-card-head" style="align-items: center;">
-          <div class="drug-card-name">
-            <h3 style="font-size:20px; color:var(--blue-dark); margin-bottom:2px;">${r.name}</h3>
+      <button class="drug-card" data-id="${r.id}" type="button" onclick="openRegimenDetail('${r.id}')" style="justify-content:flex-start; align-items:flex-start;">
+        <div class="drug-card-head" style="width:100%; align-items:flex-start; gap:12px;">
+          <div class="drug-card-name" style="text-align:left; flex:1;">
+            <h3 style="font-size:17px; color:var(--blue-dark); margin-bottom:2px;">${r.name}</h3>
             <div class="alt-name">${r.indication || ""}</div>
           </div>
-          <span class="drug-class" style="align-self:flex-start;">${r.cycle || ""}</span>
+          ${r.cycle ? `<span class="drug-class" style="flex-shrink:0;">${r.cycle}</span>` : ""}
         </div>
-        <p class="drug-card-note" style="margin-top:12px; color:var(--muted); font-size:13px; font-weight:normal;">
-          ${drugSummary || "ไม่มีข้อมูลยาในสูตรนี้"}
-        </p>
+        <div class="drug-card-note" style="margin-top:12px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
+          ${drugSummaryHtml}
+        </div>
       </button>
     `;
   }).join("");
