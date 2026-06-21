@@ -187,8 +187,19 @@
   .drug-card:hover .alt-name, .drug-card:hover .drug-card-note { color: var(--ink); }
 
   .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
-  .drug-card-name h3{font-size:16px; font-weight:600; transition: color 0.15s ease;}
-  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px; transition: color 0.15s ease;}
+  .drug-card-name { flex: 1; min-width: 0; /* ป้องกันไม่ให้กล่องข้อความดันทะลุ flexbox */ }
+  .drug-card-name h3{
+    font-size:16px; 
+    font-weight:600; 
+    transition: color 0.15s ease;
+    overflow-wrap: break-word; /* บังคับตัดคำเมื่อยาวเกินกล่อง */
+    word-break: break-word;
+  }
+  .drug-card-name .alt-name{
+    font-size:12.5px; color:var(--muted); margin-top:2px; transition: color 0.15s ease;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
   .drug-class{
     font-size:11px; font-weight:600; color:var(--blue);
     background:var(--blue-soft); padding:3px 9px; border-radius:999px;
