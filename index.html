@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChemoGuide — Drug Information & Sequencing</title>
+<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
 <link rel="icon" type="image/png" href="logo_rbh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,7 @@
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   
+  /* พื้นหลัง Gradient พร้อมลวดลายเรขาคณิตจางๆ */
   body{
     background: 
       linear-gradient(135deg, rgba(214, 224, 234, 0.5) 0%, rgba(238, 242, 245, 0.6) 50%, rgba(255, 255, 255, 0.7) 100%),
@@ -47,6 +49,7 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
 
+  /* รองรับข้อความยาว ปัดตกบรรทัดได้อัตโนมัติ */
   .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span, .sc-value {
     white-space: pre-wrap;
     word-break: break-word;
@@ -152,7 +155,7 @@
 
   .results-count{font-size:13px; color:var(--muted); margin:0 2px 14px;}
 
-  /* ===== Grid Cards ===== */
+ /* ===== Grid Cards ===== */
   .drug-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
@@ -163,15 +166,20 @@
     border-radius:var(--radius); padding:16px;
     cursor:pointer; text-align:left;
     display:flex; flex-direction:column; gap:10px;
-    justify-content: flex-start; /* บังคับเนื้อหาชิดด้านบนเสมอ */
+    /* ปรับ transition ให้สมูทและครอบคลุมเอฟเฟกต์ใหม่ */
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
+  /* --- ส่วนที่ปรับเพิ่มเอฟเฟกต์ Hover ให้เห็นชัดมากยิ่งขึ้น --- */
   .drug-card:hover{
+    /* เพิ่มเงาให้ฟุ้งและมีมิติมากขึ้น ผสมสีฟ้า */
     box-shadow: 0 16px 36px rgba(36, 84, 214, 0.15), 0 4px 12px rgba(22, 35, 63, 0.08); 
     border-color: var(--blue);
+    /* เพิ่มขอบสีฟ้าซ้อนอีกชั้นให้คมชัดสุดๆ */
     outline: 1px solid var(--blue);
+    /* เปลี่ยนสีพื้นหลังเล็กน้อยให้ดูสว่างโดดเด่น */
     background: #F7FAFF; 
+    /* ยกการ์ดให้ลอยขึ้นและขยายขนาดหน้าต่างขึ้น 1.5% */
     transform: translateY(-6px) scale(1.015);
     z-index: 10;
   }
@@ -327,6 +335,68 @@
   .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
   .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
 
+  /* ===== Regimen table (ChemoSeq) ===== */
+  .regimen-table{
+    display:flex; flex-direction:column;
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--surface); overflow:hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .regimen-table-head{
+    display:grid;
+    grid-template-columns: 1.6fr 1.3fr 2fr;
+    gap:18px;
+    padding:11px 20px;
+    background:#F5F8FC;
+    border-bottom:1px solid var(--line);
+  }
+  .regimen-table-head span{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted);
+  }
+  .regimen-row{
+    display:grid;
+    grid-template-columns: 1.6fr 1.3fr 2fr;
+    gap:18px;
+    align-items:center;
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+    background:var(--surface);
+    transition: background .15s ease;
+  }
+  .regimen-row:last-child{border-bottom:none;}
+  .regimen-row:hover{background:#F7FAFF;}
+  .regimen-row:hover .regimen-cell-name h3{color:var(--blue-dark);}
+
+  .regimen-cell-name h3{font-size:15.5px; font-weight:600; color:var(--ink); transition:color .15s;}
+  .regimen-cell-meta{display:flex; flex-direction:column; gap:6px;}
+  .regimen-cell-meta .meta-indication{font-size:13px; color:var(--ink); font-weight:500;}
+  .regimen-cell-meta .meta-cycle{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11px; font-weight:600; color:var(--blue);
+    background:var(--blue-soft); padding:3px 9px; border-radius:999px;
+    width:fit-content;
+  }
+  .regimen-cell-meta .meta-cycle svg{width:11px; height:11px;}
+  .regimen-drug-chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .regimen-drug-chip{
+    font-size:12px; font-weight:600; color:var(--blue-dark);
+    background:var(--blue-soft); border:1px solid rgba(36,84,214,0.18);
+    padding:4px 10px; border-radius:999px; white-space:nowrap;
+  }
+  .regimen-drug-chip.empty{
+    font-style:italic; font-weight:400; color:var(--muted);
+    background:#F5F8FC; border:1px dashed var(--line);
+  }
+
+  @media (max-width: 760px){
+    .regimen-table-head{display:none;}
+    .regimen-row{
+      grid-template-columns:1fr; gap:8px; padding:16px 18px;
+    }
+  }
+
   /* ===== ChemoCal Layout ===== */
   .calc-card{
     background:var(--surface); border:1px solid var(--line); box-shadow: var(--shadow);
@@ -360,12 +430,13 @@
   }
   .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
 
-  /* แผงแดชบอร์ดแสดงค่าสถิติ */
+ /* แผงแดชบอร์ดแสดงค่าสถิติ */
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
   .stat-box{
     background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease; /* เพิ่ม Transition */
   }
+  /* เพิ่ม Hover effect ให้กล่องสถิติ */
   .stat-box:hover{
     border-color: var(--blue);
     background: #FFFFFF;
@@ -375,7 +446,7 @@
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
   .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
-  /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข */
+  /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข (Geometric Interactive Box) */
   .interactive-formula-box {
     margin-top: 14px; background: #F8FAFC; border: 1px dashed #CBD5E1; 
     border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all 0.2s;
@@ -618,6 +689,7 @@
   }
   .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
 
+  /* ปรับแต่ง Toast แจ้งเตือน ให้ซ่อนสนิทเมื่อยังไม่โชว์ */
   .success-toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
     background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
@@ -636,9 +708,10 @@
   }
   .success-toast svg{width:16px; height:16px;}
 
+  /* ===== Footer รูปแบบใหม่ จัดกลางด้านล่างแต่ไม่ Fixed มีความสวยงามโมเดิร์น ===== */
   footer {
     max-width: 800px;
-    margin: 40px auto 40px auto; 
+    margin: 40px auto 40px auto; /* เพิ่มระยะห่างด้านบนและล่างให้มีพื้นที่หายใจ */
     padding: 20px 24px;
     color: var(--muted);
     font-size: 13px;
@@ -648,26 +721,62 @@
     line-height: 1.6;
     background: transparent;
   }
-
   /* =====================================================================
      แยกสีโซนการคำนวณในหน้า ChemoCal (Minimalist Color Coding)
      ===================================================================== */
-  #tab-chemocal .calc-card:nth-of-type(1) { border-top: 4px solid var(--blue); }
+
+  /* 1. ข้อมูลผู้ป่วย (คงโทนสีฟ้า Theme เดิมของเว็บ) */
+  #tab-chemocal .calc-card:nth-of-type(1) {
+    border-top: 4px solid var(--blue);
+  }
   
-  #tab-chemocal .calc-card:nth-of-type(2) { border-top: 4px solid #10B981; }
-  #tab-chemocal .calc-card:nth-of-type(2) h3 { color: #047857; }
-  #tab-chemocal .calc-card:nth-of-type(2) .field input { background: #F0FDF4; border-color: #A7F3D0; }
-  #tab-chemocal .calc-card:nth-of-type(2) .field input:focus { border-color: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+  /* 2. ขนาดยาตาม BSA (โทนสีเขียวมินต์) */
+  #tab-chemocal .calc-card:nth-of-type(2) {
+    border-top: 4px solid #10B981; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) h3 { 
+    color: #047857; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) .field input {
+    background: #F0FDF4; /* สีพื้นหลังช่องกรอกสีเขียวอ่อนมาก */
+    border-color: #A7F3D0;
+  }
+  #tab-chemocal .calc-card:nth-of-type(2) .field input:focus {
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  }
 
-  #tab-chemocal .calc-card:nth-of-type(3) { border-top: 4px solid #8B5CF6; }
-  #tab-chemocal .calc-card:nth-of-type(3) h3 { color: #6D28D9; }
-  #tab-chemocal .calc-card:nth-of-type(3) .field input { background: #F5F3FF; border-color: #DDD6FE; }
-  #tab-chemocal .calc-card:nth-of-type(3) .field input:focus { border-color: #8B5CF6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+  /* 3. ขนาดยาตามน้ำหนักตัว (โทนสีม่วงอ่อน) */
+  #tab-chemocal .calc-card:nth-of-type(3) {
+    border-top: 4px solid #8B5CF6; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) h3 { 
+    color: #6D28D9; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) .field input {
+    background: #F5F3FF; /* สีพื้นหลังช่องกรอกสีม่วงอ่อนมาก */
+    border-color: #DDD6FE;
+  }
+  #tab-chemocal .calc-card:nth-of-type(3) .field input:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  }
 
-  #tab-chemocal .calc-card:nth-of-type(4) { border-top: 4px solid #F59E0B; }
-  #tab-chemocal .calc-card:nth-of-type(4) h3 { color: #B45309; }
-  #tab-chemocal .calc-card:nth-of-type(4) .field input { background: #FFFBEB; border-color: #FDE68A; }
-  #tab-chemocal .calc-card:nth-of-type(4) .field input:focus { border-color: #F59E0B; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+  /* 4. Calvert Formula (โทนสีส้ม/เหลืองอำพัน) */
+  #tab-chemocal .calc-card:nth-of-type(4) {
+    border-top: 4px solid #F59E0B; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) h3 { 
+    color: #B45309; 
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) .field input {
+    background: #FFFBEB; /* สีพื้นหลังช่องกรอกสีส้มอ่อนมาก */
+    border-color: #FDE68A;
+  }
+  #tab-chemocal .calc-card:nth-of-type(4) .field input:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  }
 </style>
 </head>
 <body>
@@ -732,10 +841,11 @@
         เพิ่มสูตรยาใหม่
       </button>
     </div>
-    
-    <div class="drug-grid" id="regimen-grid"></div>
+
+    <div class="regimen-table" id="regimen-grid"></div>
   </section>
 
+  <!-- ===== หน้า ChemoCal ===== -->
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
@@ -777,6 +887,7 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
+      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
@@ -788,6 +899,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -820,6 +932,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -870,6 +983,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -896,6 +1010,7 @@
 
 <div class="backdrop" id="backdrop"></div>
 
+<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -910,6 +1025,7 @@
   <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
+<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -1350,9 +1466,8 @@ function renderDrugs(){
     return;
   }
 
-  /* ใช้ <div> แทน <button> เพื่อแก้ปัญหาข้อความลอยตรงกลาง */
   grid.innerHTML = filtered.map(d => `
-    <div class="drug-card" data-id="${d.id}" onclick="openDrugDetail('${d.id}')">
+    <button class="drug-card" data-id="${d.id}" type="button">
       <div class="drug-card-head">
         <div class="drug-card-name">
           <h3>${d.name}</h3>
@@ -1362,11 +1477,13 @@ function renderDrugs(){
       </div>
       <div class="drug-card-tags">${(d.tags||[]).map(t => tagPillHtml(t)).join("")}</div>
       <p class="drug-card-note" style="margin-top:8px;">${d.note || ""}</p>
-    </div>
+    </button>
   `).join("");
-}
 
-// ลบ Event Listener ส่วนเกินใน `renderDrugs` ทิ้งไป เพราะใส่ onclick ไว้ที่ div แล้ว
+  grid.querySelectorAll(".drug-card").forEach(card => {
+    card.addEventListener("click", () => openDrugDetail(card.dataset.id));
+  });
+}
 
 function openDrugDetail(id){
   const d = DRUGS.find(x => x.id === id);
@@ -1497,37 +1614,38 @@ function renderRegimens() {
   });
 
   if (!filtered.length) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">ไม่พบสูตรยาที่ค้นหา</div>`;
+    grid.innerHTML = `<div class="empty-state" style="padding:32px; text-align:center;">ไม่พบสูตรยาที่ค้นหา</div>`;
     return;
   }
 
-  grid.innerHTML = filtered.map(r => {
+  const rowsHtml = filtered.map(r => {
     const drugs = (r.steps || []).map(s => s.drug).filter(Boolean);
-    let drugSummaryHtml = "<span style='font-style:italic;'>ไม่มีข้อมูลยาในสูตรนี้</span>";
-    
-    if (drugs.length > 0) {
-      drugSummaryHtml = `<div style="display:flex; flex-direction:column; gap:2px;">` +
-        drugs.map(d => `<span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">- ${d}</span>`).join("") +
-      `</div>`;
-    }
+    const drugChipsHtml = drugs.length
+      ? drugs.map(d => `<span class="regimen-drug-chip">${d}</span>`).join("")
+      : `<span class="regimen-drug-chip empty">ไม่มีข้อมูลยาในสูตรนี้</span>`;
 
-    /* ใช้ <div> แทน <button> เพื่อแก้ปัญหาข้อความลอยตรงกลางอย่างเด็ดขาด */
     return `
-      <div class="drug-card" data-id="${r.id}" onclick="openRegimenDetail('${r.id}')">
-        <div class="drug-card-head" style="width:100%; align-items:flex-start; gap:12px;">
-          <div class="drug-card-name" style="text-align:left; flex:1;">
-            <h3 style="font-size:17px; color:var(--blue-dark); margin-bottom:2px;">${r.name}</h3>
-            <div class="alt-name">${r.indication || ""}</div>
-          </div>
-          ${r.cycle ? `<span class="drug-class" style="flex-shrink:0;">${r.cycle}</span>` : ""}
+      <div class="regimen-row" data-id="${r.id}" onclick="openRegimenDetail('${r.id}')">
+        <div class="regimen-cell-name">
+          <h3>${r.name}</h3>
         </div>
-        
-        <div class="drug-card-note" style="margin-top:6px; color:var(--muted); font-size:13px; font-weight:500; width:100%; text-align:left;">
-          ${drugSummaryHtml}
+        <div class="regimen-cell-meta">
+          ${r.indication ? `<span class="meta-indication">${r.indication}</span>` : ""}
+          ${r.cycle ? `<span class="meta-cycle">${iconHtml("clock")}${r.cycle}</span>` : ""}
         </div>
+        <div class="regimen-drug-chips">${drugChipsHtml}</div>
       </div>
     `;
   }).join("");
+
+  grid.innerHTML = `
+    <div class="regimen-table-head">
+      <span>สูตรยา</span>
+      <span>ข้อบ่งใช้ / รอบให้ยา</span>
+      <span>ยาในสูตร</span>
+    </div>
+    ${rowsHtml}
+  `;
 }
 
 document.getElementById("regimen-search").addEventListener("input", renderRegimens);
