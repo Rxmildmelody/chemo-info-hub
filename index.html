@@ -852,7 +852,7 @@
         เพิ่มสูตรยาใหม่
       </button>
     </div>
-
+    <p class="results-count" id="regimen-results-count"></p>
     <div class="regimen-table" id="regimen-grid"></div>
   </section>
 
@@ -1623,7 +1623,7 @@ function renderRegimens() {
     const matchDrug = (r.steps || []).some(s => s.drug.toLowerCase().includes(q));
     return matchName || matchInd || matchDrug;
   });
-
+document.getElementById("regimen-results-count").textContent = `พบ ${filtered.length} รายการ จากทั้งหมด ${REGIMENS.length} รายการ`;
   if (!filtered.length) {
     grid.innerHTML = `<div class="empty-state" style="padding:32px; text-align:center;">ไม่พบสูตรยาที่ค้นหา</div>`;
     return;
