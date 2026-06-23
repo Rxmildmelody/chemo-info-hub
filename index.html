@@ -788,6 +788,19 @@
     border-color: #F59E0B;
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
   }
+  /* ปรับแต่งตอนที่ขยายเต็มจอ (Fullscreen) */
+  #pdf-container:fullscreen {
+    background: var(--surface);
+    height: 100vh !important;
+    border-radius: 0;
+    border: none;
+  }
+  #pdf-container:-webkit-full-screen {
+    background: var(--surface);
+    height: 100vh !important;
+    border-radius: 0;
+    border: none;
+  }
 </style>
 </head>
 <body>
@@ -857,12 +870,28 @@
     <div class="regimen-table" id="regimen-grid"></div>
   </section>
   <section class="tab-panel" id="tab-y-site">
-    <div class="calc-card" style="padding: 0; overflow: hidden; height: 75vh; display: flex; flex-direction: column;">
-      <div style="padding: 16px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC;">
-        <h3 style="margin: 0; font-size: 16px; color: var(--blue-dark);">Y-Site Compatibility Chart</h3>
-        <span style="font-size: 12.5px; color: var(--muted);">คลิกที่ตารางแล้วกด Ctrl+F เพื่อค้นหายา</span>
+    <div class="calc-card" id="pdf-container" style="padding: 0; overflow: hidden; height: calc(100vh - 180px); display: flex; flex-direction: column; margin-bottom: 0;">
+      
+      <div style="padding: 16px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; flex-shrink: 0;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; color: var(--blue-dark);">Y-Site Compatibility Chart</h3>
+          <span style="font-size: 12.5px; color: var(--muted);">คลิกที่ตารางแล้วกด Ctrl+F เพื่อค้นหายา</span>
+        </div>
+        <button onclick="toggleFullScreen()" class="btn-secondary" style="padding: 6px 12px; font-size: 12.5px; display: flex; align-items: center; gap: 6px; border-radius: 8px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          ขยายเต็มจอ
+        </button>
       </div>
-      <iframe src="your-file.pdf" width="100%" height="100%" style="border: none; flex: 1;"></iframe>
+      
+      <iframe src="Y-site Chart.pdf" width="100%" height="100%" style="border: none; flex: 1; background: #E5E7EB;"></iframe>
+      
+      <div style="padding: 12px 22px; border-top: 1px solid var(--line); background: var(--surface); flex-shrink: 0;">
+        <p style="margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5;">
+          <strong style="color: var(--ink);">Reference:</strong> 
+          อ้างอิงจากเอกสารคู่มือความเข้ากันได้ของยาเคมีบำบัด (เช่น Trissel’s Handbook) ปี 2026
+        </p>
+      </div>
+
     </div>
   </section>
   <!-- ===== หน้า ChemoCal ===== -->
