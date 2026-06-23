@@ -882,6 +882,63 @@
           ขยายเต็มจอ
         </button>
       </div>
+     <!-- 💡 ส่วนของ คู่มือการอ่านตาราง (Legend Box) แบบพับเก็บได้ -->
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)" style="margin: 12px 22px; flex-shrink: 0; border: 1px solid var(--line); background: var(--surface);">
+        <div class="formula-trigger-btn formula-header-trigger" style="color: var(--blue-dark);">
+          <span style="font-size: 15px;">💡</span>
+          <span>วิธีการอ่านและใช้งานแผนภูมิ (คลิกเพื่อเปิด/ปิดคำแนะนำ)</span>
+        </div>
+        
+        <!-- เนื้อหาข้างใน (ใส่ onclick stopPropagation เพื่อไม่ให้คลิกข้อความแล้วกล่องพับเอง) -->
+        <div class="formula-details-content" onclick="event.stopPropagation()" style="cursor: default; padding-top: 14px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+            
+            <!-- 1. ขั้นตอนการอ่าน -->
+            <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
+              <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">📍 ขั้นตอนการอ่าน Matrix</strong>
+              <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
+                <li><strong>ขั้นตอนที่ 1:</strong> มองหายาตัวแรกที่จะบริหารใน "แกนตั้ง (ด้านซ้ายสุด)"</li>
+                <li><strong>ขั้นตอนที่ 2:</strong> มองหายาตัวที่สองที่จะบริหารต่อใน "แกนนอน (ด้านบนหรือล่าง)"</li>
+                <li><strong>ขั้นตอนที่ 3:</strong> ดูจุดตัดของยาทั้งสองตัวเพื่ออ่านค่าจากสีและสัญลักษณ์</li>
+              </ul>
+            </div>
+
+            <!-- 2. ความหมายสี (ใส่แถบสีประกอบให้ดูง่าย) -->
+            <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
+              <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🎨 ความเข้ากันได้ทางสายน้ำเกลือ (Y-Site)</strong>
+              <ul style="margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--muted); line-height: 1.6;">
+                <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                  <span style="display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: #22C55E; flex-shrink: 0; margin-top: 3px;"></span>
+                  <span><strong>สีเขียว (Compatible):</strong> สามารถให้ผ่านสายร่วมกันได้</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                  <span style="display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: #F43F5E; flex-shrink: 0; margin-top: 3px;"></span>
+                  <span><strong>สีชมพู (Incompatible):</strong> ห้ามให้ร่วมกันในสายเดียวกันเด็ดขาด</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                  <span style="display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: #475569; flex-shrink: 0; margin-top: 3px;"></span>
+                  <span><strong>สีเทาเข้ม (Not Tested):</strong> ยังไม่มีข้อมูลการทดสอบ</span>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 8px;">
+                  <span style="display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: #EAB308; flex-shrink: 0; margin-top: 3px;"></span>
+                  <span><strong>สีเหลือง (Variable):</strong> ผลลัพธ์อาจแปรผันตามปัจจัยอื่น ๆ</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 3. สัญลักษณ์ -->
+            <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
+              <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🔤 สัญลักษณ์ลำดับการบริหารยา (Sequence Legend)</strong>
+              <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
+                <li style="margin-bottom: 4px;"><strong>P1, P2 / C1, C2:</strong> บ่งบอกลำดับที่แนะนำชัดเจน (เช่น ตัวไหนให้เป็นอันดับ 1 หรือ 2)</li>
+                <li style="margin-bottom: 4px;"><strong>PK / PD / T:</strong> ต้องเรียงลำดับตามนี้ด้วยเหตุผลทางเภสัชจลนศาสตร์ (PK), เภสัชพลศาสตร์ (PD) หรือลดความเป็นพิษ (T)</li>
+                <li><strong>ND (No Difference):</strong> ให้ตัวใดก่อนหรือหลังก็ได้ ไม่พบความแตกต่างในด้านความปลอดภัยหรือประสิทธิผล</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
       
       <iframe src="Y-site Chart.pdf" width="100%" height="100%" style="border: none; flex: 1; background: #E5E7EB;"></iframe>
       
