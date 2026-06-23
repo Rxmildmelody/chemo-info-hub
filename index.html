@@ -813,6 +813,7 @@
   <nav class="tabs" role="tablist">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">💊 ChemoInfo</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="sequencing">🔄 ChemoSeq</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="y-site">📊 Sequencing Chart</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="chemocal">🧮 ChemoCal</button>
   </nav>
 </header>
@@ -855,7 +856,15 @@
     <p class="results-count" id="regimen-results-count"></p>
     <div class="regimen-table" id="regimen-grid"></div>
   </section>
-
+  <section class="tab-panel" id="tab-y-site">
+    <div class="calc-card" style="padding: 0; overflow: hidden; height: 75vh; display: flex; flex-direction: column;">
+      <div style="padding: 16px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC;">
+        <h3 style="margin: 0; font-size: 16px; color: var(--blue-dark);">Y-Site Compatibility Chart</h3>
+        <span style="font-size: 12.5px; color: var(--muted);">คลิกที่ตารางแล้วกด Ctrl+F เพื่อค้นหายา</span>
+      </div>
+      <iframe src="your-file.pdf" width="100%" height="100%" style="border: none; flex: 1;"></iframe>
+    </div>
+  </section>
   <!-- ===== หน้า ChemoCal ===== -->
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
