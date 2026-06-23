@@ -870,7 +870,7 @@
     <div class="regimen-table" id="regimen-grid"></div>
   </section>
   <section class="tab-panel" id="tab-y-site">
-    <div class="calc-card" id="pdf-container" style="padding: 0; overflow: hidden; height: calc(100vh - 180px); display: flex; flex-direction: column; margin-bottom: 0;">
+    <div class="calc-card" id="pdf-container" style="padding: 0; overflow: hidden; height: calc(100vh - 120px); display: flex; flex-direction: column; margin-bottom: 0;">
       
       <div style="padding: 16px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; flex-shrink: 0;">
         <div>
@@ -888,7 +888,7 @@
       <div style="padding: 12px 22px; border-top: 1px solid var(--line); background: var(--surface); flex-shrink: 0;">
         <p style="margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5;">
           <strong style="color: var(--ink);">Reference:</strong> 
-          อ้างอิงจากเอกสารคู่มือความเข้ากันได้ของยาเคมีบำบัด (เช่น Trissel’s Handbook) ปี 2026
+          Lehman AD, Howard A, Mancini R. Chemotherapy administration sequencing: an update on the current literature. J Hematol Oncol Pharm [Internet]. 2019 Dec [cited 2026 Jun 23];9(4):175-81. Available from: https://www.jhoponline.com/issue-archive/2019-issues/december-vol-9-no-4/16757-top-16757
         </p>
       </div>
 
@@ -2280,7 +2280,27 @@ function showToast(msg){
   t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 3000);
 }
-
+/* =====================================================================
+   FULLSCREEN PDF TOGGLE
+   ===================================================================== */
+function toggleFullScreen() {
+  const container = document.getElementById("pdf-container");
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    // สั่งขยายเต็มจอ
+    if (container.requestFullscreen) {
+      container.requestFullscreen();
+    } else if (container.webkitRequestFullscreen) { /* รองรับ Safari */
+      container.webkitRequestFullscreen();
+    }
+  } else {
+    // สั่งออกจากการเต็มจอ
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* รองรับ Safari */
+      document.webkitExitFullscreen();
+    }
+  }
+}
 initDatabase();
 </script>
 </body>
